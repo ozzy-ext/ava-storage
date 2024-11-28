@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage", "AvaStorage\AvaStorage.csproj", "{CAB7868B-686A-4026-95DD-B703A5EB7F87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage", "AvaStorage\AvaStorage.csproj", "{CAB7868B-686A-4026-95DD-B703A5EB7F87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Application", "AvaStorage.Application\AvaStorage.Application.csproj", "{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Domain", "AvaStorage.Domain\AvaStorage.Domain.csproj", "{10DA1785-2171-4803-98E2-3B043B624F77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{CAB7868B-686A-4026-95DD-B703A5EB7F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAB7868B-686A-4026-95DD-B703A5EB7F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAB7868B-686A-4026-95DD-B703A5EB7F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10DA1785-2171-4803-98E2-3B043B624F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10DA1785-2171-4803-98E2-3B043B624F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10DA1785-2171-4803-98E2-3B043B624F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10DA1785-2171-4803-98E2-3B043B624F77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
