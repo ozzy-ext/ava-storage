@@ -5,9 +5,13 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage", "AvaStorage\AvaStorage.csproj", "{CAB7868B-686A-4026-95DD-B703A5EB7F87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Application", "AvaStorage.Application\AvaStorage.Application.csproj", "{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Application", "AvaStorage.Application\AvaStorage.Application.csproj", "{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Domain", "AvaStorage.Domain\AvaStorage.Domain.csproj", "{10DA1785-2171-4803-98E2-3B043B624F77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Domain", "AvaStorage.Domain\AvaStorage.Domain.csproj", "{10DA1785-2171-4803-98E2-3B043B624F77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Domain.Tests", "AvaStorage.Domain.Tests\AvaStorage.Domain.Tests.csproj", "{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Tests", "AvaStorage.Tests\AvaStorage.Tests.csproj", "{0C4E1919-1E24-426E-9075-7E27F1C0266C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{10DA1785-2171-4803-98E2-3B043B624F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10DA1785-2171-4803-98E2-3B043B624F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10DA1785-2171-4803-98E2-3B043B624F77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

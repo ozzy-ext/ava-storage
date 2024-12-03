@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using AvaStorage.Application.UseCases.PutAvatar;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MyLab.WebErrors;
 
 namespace AvaStorage.Controllers
 {
@@ -11,6 +13,8 @@ namespace AvaStorage.Controllers
     {
 
         [HttpPut]
+        [Consumes("application/octet-stream")]
+        [ErrorToResponse(typeof(ValidationException), HttpStatusCode.BadRequest)]
         public async Task<IActionResult> PutAsync
             (
                 [FromQuery(Name = "id")][Required(AllowEmptyStrings = false)] string id,
@@ -21,7 +25,7 @@ namespace AvaStorage.Controllers
         {
             await mediator.Send(new PutAvatarCommand(id, subjectType, picture), cancellationToken);
 
-            return Created();
+            return Ok();
         }
 
         [HttpGet]
@@ -32,7 +36,7 @@ namespace AvaStorage.Controllers
                 CancellationToken cancellationToken
             )
         {
-
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,27 +1,32 @@
-﻿namespace AvaStorage.Domain.ValueObjects
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AvaStorage.Domain.ValueObjects
 {
     public record AvatarId
     {
         public string Value { get; private set; }
 
-        private AvatarId() 
+        public AvatarId(string value)
         {
+            if (!Validate(value))
+                throw new ArgumentException(nameof(value));
+            Value = value;
         }
 
-        public static bool TryCreate(string value, out AvatarId? id)
+        public static bool TryParse(string value, out AvatarId? id)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (!Validate(value))
             {
                 id = null;
                 return false;
             }
 
-            id = new AvatarId
-            {
-                Value = value
-            };
+            id = new AvatarId(value);
 
-            return false;
+            return true;
         }
+
+        public static bool Validate(string value)
+            => !string.IsNullOrWhiteSpace(value);
     }
 }

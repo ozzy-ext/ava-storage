@@ -1,26 +1,31 @@
-﻿namespace AvaStorage.Domain.ValueObjects;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AvaStorage.Domain.ValueObjects;
 
 public record SubjectType
 {
     public string Value { get; private set; }
 
-    private SubjectType()
+    public SubjectType(string value)
     {
+        if (!Validate(value))
+            throw new ArgumentException(nameof(value));
+        Value = value;
     }
 
-    public static bool TryCreate(string value, out SubjectType? id)
+    public static bool TryParse(string value, out SubjectType? id)
     {
-        if (string.IsNullOrWhiteSpace(value))
+        if (!Validate(value))
         {
             id = null;
             return false;
         }
 
-        id = new SubjectType
-        {
-            Value = value
-        };
+        id = new SubjectType(value);
 
-        return false;
+        return true;
     }
+
+    public static bool Validate(string value)
+        => !string.IsNullOrWhiteSpace(value);
 }
