@@ -26,12 +26,15 @@ namespace AvaStorage.Tests
         {
             //Arrange
             var putHandlerMock = new Mock<IRequestHandler<PutAvatarCommand>>();
+            var repoMock = new Mock<IPictureRepository>();
 
             var outHandlerDescriptor = ServiceDescriptor.Transient(typeof(IRequestHandler<PutAvatarCommand>), s => putHandlerMock.Object);
 
             var proxyAsset = _fxt.StartWithProxy
                 (
-                    s => s.Replace(outHandlerDescriptor),
+                    s => s
+                        .Replace(outHandlerDescriptor)
+                        .AddSingleton(repoMock.Object),
                     c =>
                     {
                         c.BaseAddress = new UriBuilder(c.BaseAddress!)
@@ -66,7 +69,7 @@ namespace AvaStorage.Tests
 
         [Theory]
         [MemberData(nameof(GetInvalidParameters))]
-        public async Task ShouldReturn400WhenBadRequest(string id, byte[] picBin)
+        public async Task ShouldReturn400WhenPutBadRequest(string id, byte[] picBin)
         {
             //Arrange
             var repoMock = new Mock<IPictureRepository>();

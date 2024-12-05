@@ -3,6 +3,8 @@ using AvaStorage.Application.Options;
 using AvaStorage.Application.UseCases.PutAvatar;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.ValueObjects;
+using AvaStorage.Infrastructure.ImageSharp;
+using Microsoft.Extensions.Options;
 using Moq;
 
 namespace AvaStorage.Application.Tests
@@ -14,9 +16,8 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             var repo = new Mock<IPictureRepository>();
-            var options = new AvaStorageOptions();
-
-            var handler = new PutAvatarHandler(options, repo.Object);
+            var options = new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
+            var handler = new PutAvatarHandler(options, repo.Object, new PictureTools());
 
             var picBin = await File.ReadAllBytesAsync("files\\norm.jpg");
 
@@ -35,7 +36,7 @@ namespace AvaStorage.Application.Tests
                 r => r.SavePictureAsync
                 (
                     It.Is<AvatarId>(v => v.Value == "foo"),
-                    It.Is<AvatarPicture>(v => v.Image.Width == 436 && v.Image.Height == 395)
+                    It.Is<AvatarPicture>(v => v.Size.Width == 436 && v.Size.Height == 395)
                 )
             );
             repo.VerifyNoOtherCalls();
@@ -47,9 +48,8 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             var repo = new Mock<IPictureRepository>();
-            var options = new AvaStorageOptions();
-
-            var handler = new PutAvatarHandler(options, repo.Object);
+            var options = new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
+            var handler = new PutAvatarHandler(options, repo.Object, new PictureTools());
 
             var putCmd = new PutAvatarCommand
             (

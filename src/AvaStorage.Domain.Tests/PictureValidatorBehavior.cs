@@ -1,5 +1,6 @@
 ﻿using AvaStorage.Domain.Tools;
 using AvaStorage.Domain.ValueObjects;
+using AvaStorage.Infrastructure.ImageSharp;
 
 namespace AvaStorage.Domain.Tests
 {
@@ -8,17 +9,11 @@ namespace AvaStorage.Domain.Tests
         [Theory]
         [InlineData("1200.jpg", false)]
         [InlineData("norm.jpg", true)]
-        public void ShouldValidateSize(string filename, bool expectedValidation)
+        public async Task ShouldValidateSize(string filename, bool expectedValidation)
         {
             //Arrange
-            var validator = new PictureValidator
-            {
-                MaxPictureSize = 512
-            };
-
-            var pictureBin = File.ReadAllBytes(Path.Combine("files", filename));
-
-            AvatarPicture.TryLoad(pictureBin, out var avaPicture);
+            var validator = new PictureValidator(512);
+            var avaPicture = await PictureTools.LoadFromFileAsync(Path.Combine("files",filename), CancellationToken.None);
 
             //Act
             bool validationResult = validator.IsValid(avaPicture!);

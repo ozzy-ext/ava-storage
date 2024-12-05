@@ -1,8 +1,8 @@
-﻿
+﻿using AvaService.Infrastructure.Services;
 using AvaStorage.Application.Options;
+using AvaStorage.Infrastructure.ImageSharp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SixLabors.ImageSharp;
 
 namespace AvaStorage.Application;
 
@@ -15,7 +15,8 @@ public static class ServiceCollectionExtension
         if (services == null) throw new ArgumentNullException(nameof(services));
 
         return services
-            .AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Anchor>());
+            .AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Anchor>())
+            .AddSingleton<IPictureTools, PictureTools>();
     }
 
     public static IServiceCollection ConfigureAvaServiceLogic(this IServiceCollection services, IConfiguration config, string sectionName = DefaultConfigSectionName)

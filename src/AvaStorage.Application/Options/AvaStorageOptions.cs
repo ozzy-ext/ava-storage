@@ -2,6 +2,6 @@
 {
     public class AvaStorageOptions
     {
-        public int MaxAvaSize { get; set; } = 512;
+        public int MaxSize { get; set; } = 512;
     }
 }

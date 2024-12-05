@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using AvaStorage.Application.UseCases.GetAvatar;
 using AvaStorage.Application.UseCases.PutAvatar;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,14 +30,23 @@ namespace AvaStorage.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> GetAsync
+        [ErrorToResponse(typeof(ValidationException), HttpStatusCode.BadRequest)]
+        public async Task<HttpResponseMessage> GetAsync
             (
-                [FromQuery]string id, 
-                [FromQuery]int? size, 
+                [FromQuery(Name = "id")][Required]string id, 
+                [FromQuery(Name = "sz")]int? size, 
+                [FromQuery(Name = "st")]string? subjectType, 
                 CancellationToken cancellationToken
             )
         {
-            throw new NotImplementedException();
+            var result = await mediator.Send(new GetAvatarCommand(id, size, subjectType), cancellationToken);
+
+            if (result.AvatarPicture == null) return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(result.AvatarPicture)
+            };
         }
     }
 }

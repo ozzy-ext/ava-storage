@@ -4,11 +4,16 @@ namespace AvaStorage.Domain.Tools
 {
     public class PictureValidator
     {
-        public int MaxPictureSize { get; set; } = 512;
+        private readonly int _maxSize;
+
+        public PictureValidator(int maxSize)
+        {
+            _maxSize = maxSize;
+        }
 
         public bool IsValid(AvatarPicture avatarPicture)
         {
-            return avatarPicture.Image.Height <= MaxPictureSize && avatarPicture.Image.Width <= MaxPictureSize;
+            return avatarPicture.Size.Height <= _maxSize && avatarPicture.Size.Width <= _maxSize;
         }
     }
 }

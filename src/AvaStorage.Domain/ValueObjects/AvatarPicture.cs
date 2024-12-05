@@ -1,37 +1,36 @@
-﻿using SixLabors.ImageSharp;
+﻿using System.Collections.Immutable;
 
 namespace AvaStorage.Domain.ValueObjects
 {
-    public record AvatarPicture : IDisposable
+    public record AvatarPicture
     {
-        public Image Image { get; private set; }
+        public ImmutableArray<byte> Binary { get; }
+        public PictureSize Size { get; }
 
-        private AvatarPicture(Image image)
+        public AvatarPicture(byte[] binary, PictureSize size)
         {
-            Image = image ?? throw new ArgumentNullException(nameof(image));
+            if (!IsValid(binary, size))
+                throw new InvalidOperationException("Invalid parameters");
+
+            Binary = binary.ToImmutableArray();
+            Size = size;
         }
 
-        public static bool TryLoad(byte[] binary, out AvatarPicture? picture)
+        public static bool TryLoad(byte[] binary, PictureSize size, out AvatarPicture? picture)
         {
-            Image image;
-            try
-            {
-                image = Image.Load(binary);
-            }
-            catch (Exception)
+            if (!IsValid(binary, size))
             {
                 picture = null;
                 return false;
             }
 
-            picture = new AvatarPicture(image);
-
+            picture = new AvatarPicture(binary, size);
             return true;
         }
 
-        public void Dispose()
+        public static bool IsValid(byte[] binary, PictureSize size)
         {
-            Image.Dispose();
+            return binary != null;
         }
     }
 }
