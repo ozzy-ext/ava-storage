@@ -36,7 +36,7 @@ namespace AvaStorage.Application.UseCases.PutAvatar
             if (!AvatarPicture.TryLoad(request.Picture, out var avatarPicture))
                 throw new ValidationException("Avatar picture has wrong format");
 
-            if(new PictureValidator{MaxPictureSize = _opts.MaxAvaSize}.IsValid(avatarPicture!))
+            if(!new PictureValidator{MaxPictureSize = _opts.MaxAvaSize}.IsValid(avatarPicture!))
                 throw new ValidationException("Avatar picture is invalid");
 
             return _picRepo.SavePictureAsync(avatarId!, subjectType!, avatarPicture!);

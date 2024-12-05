@@ -17,4 +17,8 @@
     <ProjectReference Include="..\AvaStorage.Domain\AvaStorage.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="AvaStorage.Application.Tests" />
+  </ItemGroup>
+
 </Project>

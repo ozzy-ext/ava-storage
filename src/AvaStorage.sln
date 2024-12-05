@@ -9,9 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Application", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Domain", "AvaStorage.Domain\AvaStorage.Domain.csproj", "{10DA1785-2171-4803-98E2-3B043B624F77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Domain.Tests", "AvaStorage.Domain.Tests\AvaStorage.Domain.Tests.csproj", "{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Domain.Tests", "AvaStorage.Domain.Tests\AvaStorage.Domain.Tests.csproj", "{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Tests", "AvaStorage.Tests\AvaStorage.Tests.csproj", "{0C4E1919-1E24-426E-9075-7E27F1C0266C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Tests", "AvaStorage.Tests\AvaStorage.Tests.csproj", "{0C4E1919-1E24-426E-9075-7E27F1C0266C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Application.Tests", "AvaStorage.Application.Tests\AvaStorage.Application.Tests.csproj", "{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EE65A3B9-2586-4AA2-8466-776AC52F4FE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{081D1E61-C0E4-45B2-9BAE-6390389183BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +45,17 @@ Global
 		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789} = {EE65A3B9-2586-4AA2-8466-776AC52F4FE5}
+		{10DA1785-2171-4803-98E2-3B043B624F77} = {EE65A3B9-2586-4AA2-8466-776AC52F4FE5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81603E0C-F8F6-4075-A55A-284D944721FF}
