@@ -1,6 +1,6 @@
 ﻿using AvaStorage.Domain.ValueObjects;
 
-namespace AvaService.Infrastructure
+namespace AvaStorage.Infrastructure
 {
     public record ImageSize(int Width, int Height)
     {

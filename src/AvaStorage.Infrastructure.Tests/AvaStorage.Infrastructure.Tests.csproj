@@ -17,8 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvaService.Infrastructure\AvaService.Infrastructure.csproj" />
-    <ProjectReference Include="..\AvaStorage.Domain\AvaStorage.Domain.csproj" />
+    <Reference Include="AvaService.Infrastructure">
+      <HintPath>..\AvaService.Infrastructure\bin\Debug\net8.0\AvaService.Infrastructure.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

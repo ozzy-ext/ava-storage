@@ -1,7 +1,7 @@
+using AvaService.Infrastructure;
 using AvaService.Infrastructure.Tools;
-using AvaStorage.Domain.ValueObjects;
 
-namespace AvaService.Infrastructure.Tests
+namespace AvaStorage.Infrastructure.Tests
 {
     public class PictureResizeCalculatorBehavior
     {

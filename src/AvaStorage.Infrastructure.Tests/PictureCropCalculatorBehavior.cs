@@ -1,6 +1,7 @@
-﻿using AvaService.Infrastructure.Tools;
+﻿using AvaService.Infrastructure;
+using AvaService.Infrastructure.Tools;
 
-namespace AvaService.Infrastructure.Tests
+namespace AvaStorage.Infrastructure.Tests
 {
     public class PictureCropCalculatorBehavior
     {

@@ -1,4 +1,4 @@
-﻿namespace AvaService.Infrastructure;
+﻿namespace AvaStorage.Infrastructure;
 
 public class PictureOptions
 {

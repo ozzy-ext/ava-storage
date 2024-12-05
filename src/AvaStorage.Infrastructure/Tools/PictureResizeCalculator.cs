@@ -1,6 +1,4 @@
-﻿using AvaStorage.Domain.ValueObjects;
-
-namespace AvaService.Infrastructure.Tools
+﻿namespace AvaStorage.Infrastructure.Tools
 {
     public static class PictureResizeCalculator
     {
