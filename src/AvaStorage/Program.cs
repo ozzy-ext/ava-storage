@@ -1,3 +1,5 @@
+using System.Net;
+using AvaStorage;
 using AvaStorage.Application;
 using AvaStorage.ByteArrayFormatting;
 using MyLab.WebErrors;
@@ -14,6 +16,12 @@ builder.Services.AddControllers(c =>
 });
 builder.Services.AddAvaServiceLogic();
 builder.Services.ConfigureAvaServiceLogic(builder.Configuration);
+
+builder.WebHost.ConfigureKestrel((ctx, opt) =>
+{
+    opt.Listen(IPAddress.Loopback, ListenConstants.PublicPort);
+    opt.Listen(IPAddress.Loopback, ListenConstants.AdminPort);
+});
 
 var app = builder.Build();
 

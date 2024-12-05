@@ -11,11 +11,11 @@ using Xunit.Abstractions;
 
 namespace AvaStorage.Tests
 {
-    public class AvaStorageApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageContractV1>>
+    public class AdminApiBehavior : IClassFixture<TestApiFixture<Program, IAdminContractV1>>
     {
-        private readonly TestApiFixture<Program, IAvaStorageContractV1> _fxt;
+        private readonly TestApiFixture<Program, IAdminContractV1> _fxt;
 
-        public AvaStorageApiBehavior(TestApiFixture<Program, IAvaStorageContractV1> fxt, ITestOutputHelper output)
+        public AdminApiBehavior(TestApiFixture<Program, IAdminContractV1> fxt, ITestOutputHelper output)
         {
             fxt.Output = output;
             _fxt = fxt;
@@ -29,10 +29,20 @@ namespace AvaStorage.Tests
 
             var outHandlerDescriptor = ServiceDescriptor.Transient(typeof(IRequestHandler<PutAvatarCommand>), s => putHandlerMock.Object);
 
-            var proxyAsset = _fxt.StartWithProxy(s => s.Replace(outHandlerDescriptor));
+            var proxyAsset = _fxt.StartWithProxy
+                (
+                    s => s.Replace(outHandlerDescriptor),
+                    c =>
+                    {
+                        c.BaseAddress = new UriBuilder(c.BaseAddress!)
+                        {
+                            Port = ListenConstants.AdminPort 
+                        }.Uri;
+                    });
             var client = proxyAsset.ApiClient;
 
             var pictureBin = new byte[] { 1, 2, 3 };
+
             //Act
             var response = await client.PutAsync("foo", "bar", pictureBin);
 
@@ -62,7 +72,16 @@ namespace AvaStorage.Tests
             //Arrange
             var repoMock = new Mock<IPictureRepository>();
 
-            var proxyAsset = _fxt.StartWithProxy(s => s.AddSingleton(repoMock.Object));
+            var proxyAsset = _fxt.StartWithProxy
+                (
+                    s => s.AddSingleton(repoMock.Object),
+                    c =>
+                    {
+                        c.BaseAddress = new UriBuilder(c.BaseAddress!)
+                        {
+                            Port = ListenConstants.AdminPort
+                        }.Uri;
+                    });
             var client = proxyAsset.ApiClient;
 
             //Act

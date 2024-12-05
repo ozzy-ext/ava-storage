@@ -8,8 +8,9 @@ using MyLab.WebErrors;
 namespace AvaStorage.Controllers
 {
     [ApiController]
+    [Host(ListenConstants.AdminHost)]
     [Route("v1/ava")]
-    public class AvaController(IMediator mediator) : ControllerBase
+    public class AdminController(IMediator mediator) : ControllerBase
     {
 
         [HttpPut]
