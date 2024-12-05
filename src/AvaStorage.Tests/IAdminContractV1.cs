@@ -9,7 +9,6 @@ namespace AvaStorage.Tests
         Task<CallDetails> PutAsync
         (
             [Query("id")] string id,
-            [Query("st")] string? subjectType,
             [BinContent] byte[] picture
         );
     }

@@ -29,17 +29,13 @@ namespace AvaStorage.Application.UseCases.PutAvatar
             if (!AvatarId.TryParse(request.Id, out var avatarId))
                 throw new ValidationException("Avatar ID has wrong format");
 
-            SubjectType? subjectType = null;
-            if (request.SubjectType != null && !SubjectType.TryParse(request.SubjectType, out subjectType))
-                throw new ValidationException("Subject type has wrong format");
-
             if (!AvatarPicture.TryLoad(request.Picture, out var avatarPicture))
                 throw new ValidationException("Avatar picture has wrong format");
 
             if(!new PictureValidator{MaxPictureSize = _opts.MaxAvaSize}.IsValid(avatarPicture!))
                 throw new ValidationException("Avatar picture is invalid");
 
-            return _picRepo.SavePictureAsync(avatarId!, subjectType!, avatarPicture!);
+            return _picRepo.SavePictureAsync(avatarId!, avatarPicture!);
         }
     }
 }

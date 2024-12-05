@@ -23,7 +23,6 @@ namespace AvaStorage.Application.Tests
             var putCmd = new PutAvatarCommand
             (
                 "foo",
-                "bar",
                 picBin
             );
 
@@ -36,7 +35,6 @@ namespace AvaStorage.Application.Tests
                 r => r.SavePictureAsync
                 (
                     It.Is<AvatarId>(v => v.Value == "foo"),
-                    It.Is<SubjectType>(v => v.Value == "bar"),
                     It.Is<AvatarPicture>(v => v.Image.Width == 436 && v.Image.Height == 395)
                 )
             );
@@ -45,7 +43,7 @@ namespace AvaStorage.Application.Tests
 
         [Theory]
         [MemberData(nameof(GetInvalidParameters))]
-        public async Task ShouldFailIfInvalidParameters(string id, string subjectType, byte[] picBin)
+        public async Task ShouldFailIfInvalidParameters(string id, byte[] picBin)
         {
             //Arrange
             var repo = new Mock<IPictureRepository>();
@@ -56,7 +54,6 @@ namespace AvaStorage.Application.Tests
             var putCmd = new PutAvatarCommand
             (
                 id,
-                subjectType,
                 picBin
             );
 
@@ -75,9 +72,8 @@ namespace AvaStorage.Application.Tests
 
             return new object[][]
             {
-                new object[] { "foo", "bar", invalidPicBin},
-                new object[] { "", "bar", validPicBin},
-                new object[] { "foo", "", validPicBin},
+                new object[] { "foo", invalidPicBin},
+                new object[] { "", validPicBin}
             };
         }
     }

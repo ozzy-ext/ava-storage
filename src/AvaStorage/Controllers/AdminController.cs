@@ -19,12 +19,11 @@ namespace AvaStorage.Controllers
         public async Task<IActionResult> PutAsync
             (
                 [FromQuery(Name = "id")][Required(AllowEmptyStrings = false)] string id,
-                [FromQuery(Name = "st")] string? subjectType,
                 [FromBody][Required] byte[] picture,
                 CancellationToken cancellationToken
             )
         {
-            await mediator.Send(new PutAvatarCommand(id, subjectType, picture), cancellationToken);
+            await mediator.Send(new PutAvatarCommand(id, picture), cancellationToken);
 
             return Ok();
         }

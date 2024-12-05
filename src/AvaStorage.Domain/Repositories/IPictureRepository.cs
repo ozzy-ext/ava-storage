@@ -4,6 +4,8 @@ namespace AvaStorage.Domain.Repositories
 {
     public interface IPictureRepository
     {
-        Task SavePictureAsync(AvatarId id, SubjectType subjectType, AvatarPicture picture);
+        Task SavePictureAsync(AvatarId id, AvatarPicture picture);
+
+        Task LoadPictureAsync(AvatarId id);
     }
 }

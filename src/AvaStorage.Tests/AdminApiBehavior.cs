@@ -44,7 +44,7 @@ namespace AvaStorage.Tests
             var pictureBin = new byte[] { 1, 2, 3 };
 
             //Act
-            var response = await client.PutAsync("foo", "bar", pictureBin);
+            var response = await client.PutAsync("foo", pictureBin);
 
             //Assert
             Assert.NotNull(response);
@@ -54,7 +54,6 @@ namespace AvaStorage.Tests
                 (
                     It.Is<PutAvatarCommand>(c => 
                             c.Id == "foo" &&
-                            c.SubjectType == "bar" &&
                             c.Picture[0] == 1 &&
                             c.Picture[1] == 2 &&
                             c.Picture[2] == 3
@@ -67,7 +66,7 @@ namespace AvaStorage.Tests
 
         [Theory]
         [MemberData(nameof(GetInvalidParameters))]
-        public async Task ShouldReturn400WhenBadRequest(string id, string subType, byte[] picBin)
+        public async Task ShouldReturn400WhenBadRequest(string id, byte[] picBin)
         {
             //Arrange
             var repoMock = new Mock<IPictureRepository>();
@@ -85,7 +84,7 @@ namespace AvaStorage.Tests
             var client = proxyAsset.ApiClient;
 
             //Act
-            var response = await client.PutAsync(id, subType, picBin);
+            var response = await client.PutAsync(id, picBin);
 
             //Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -97,8 +96,8 @@ namespace AvaStorage.Tests
 
             return new object[][]
             {
-                new object[] { "foo", "bar", Array.Empty<byte>() },
-                new object[] { null, "bar", validPicBin },
+                new object[] { "foo", Array.Empty<byte>() },
+                new object[] { null, validPicBin },
             };
         }
     }
