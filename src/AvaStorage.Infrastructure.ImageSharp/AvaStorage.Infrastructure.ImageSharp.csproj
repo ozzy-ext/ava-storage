@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AvaStorage.Domain\AvaStorage.Domain.csproj" />
+    <ProjectReference Include="..\AvaStorage.Infrastructure\AvaStorage.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

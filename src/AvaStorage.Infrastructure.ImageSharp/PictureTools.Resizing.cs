@@ -1,7 +1,6 @@
-﻿using AvaService.Infrastructure;
-using AvaService.Infrastructure.Services;
-using AvaService.Infrastructure.Tools;
-using AvaStorage.Domain.ValueObjects;
+﻿using AvaStorage.Domain.ValueObjects;
+using AvaStorage.Infrastructure.Services;
+using AvaStorage.Infrastructure.Tools;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;

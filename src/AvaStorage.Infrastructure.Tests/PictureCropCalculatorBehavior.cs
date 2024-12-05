@@ -1,5 +1,4 @@
-﻿using AvaService.Infrastructure;
-using AvaService.Infrastructure.Tools;
+﻿using AvaStorage.Infrastructure.Tools;
 
 namespace AvaStorage.Infrastructure.Tests
 {

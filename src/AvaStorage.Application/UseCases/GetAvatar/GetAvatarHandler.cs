@@ -1,11 +1,11 @@
-﻿using AvaService.Infrastructure.Services;
-using AvaStorage.Application.Options;
+﻿using AvaStorage.Application.Options;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.Tools;
 using AvaStorage.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
+using AvaStorage.Infrastructure.Services;
 
 namespace AvaStorage.Application.UseCases.GetAvatar
 {

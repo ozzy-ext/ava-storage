@@ -1,6 +1,6 @@
-﻿using AvaService.Infrastructure.Services;
-using AvaStorage.Application.Options;
+﻿using AvaStorage.Application.Options;
 using AvaStorage.Infrastructure.ImageSharp;
+using AvaStorage.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
