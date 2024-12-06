@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvaService.Infrastructure\AvaService.Infrastructure.csproj" />
     <ProjectReference Include="..\AvaStorage.Domain\AvaStorage.Domain.csproj" />
     <ProjectReference Include="..\AvaStorage.Infrastructure.ImageSharp\AvaStorage.Infrastructure.ImageSharp.csproj" />
     <ProjectReference Include="..\AvaStorage.Infrastructure\AvaStorage.Infrastructure.csproj" />
