@@ -9,7 +9,7 @@ namespace AvaStorage.Infrastructure.ImageSharp
 {
     public partial class PictureTools : IPictureTools
     {
-        public async Task<AvatarPicture> ResizeAndSquareCropAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken)
+        public async Task<AvatarPicture> NormalizeAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken)
         {
             using var readMem = new MemoryStream(origin.Binary.ToArray());
             using var img = await Image.LoadAsync(readMem, cancellationToken);

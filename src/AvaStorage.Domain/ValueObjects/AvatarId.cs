@@ -13,6 +13,11 @@ namespace AvaStorage.Domain.ValueObjects
             Value = value;
         }
 
+        public static implicit operator AvatarId(string value)
+        {
+            return new AvatarId(value);
+        }
+
         public static bool TryParse(string value, out AvatarId? id)
         {
             if (!Validate(value))

@@ -6,6 +6,6 @@ namespace AvaStorage.Infrastructure.Services
     {
         Task<AvatarPicture?> DeserializeAsync(byte[] binary, CancellationToken cancellationToken);
 
-        Task<AvatarPicture> ResizeAndSquareCropAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken);
+        Task<AvatarPicture> NormalizeAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken);
     }
 }

@@ -13,6 +13,10 @@ public record SubjectType
         Value = value;
     }
 
+    public static implicit operator SubjectType(string value)
+    {
+        return new SubjectType(value);
+    }
     public static bool TryParse(string value, out SubjectType? id)
     {
         if (!Validate(value))

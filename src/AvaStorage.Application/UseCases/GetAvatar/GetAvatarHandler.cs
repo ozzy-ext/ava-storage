@@ -27,12 +27,18 @@ namespace AvaStorage.Application.UseCases.GetAvatar
             if (request.Size.HasValue && !new PictureSizeValidator(options.Value.MaxSize).IsValid(request.Size.Value))
                 throw new ValidationException("Wrong size value");
 
-
             var loadedPicture = await LoadedPictureAsync(avatarId!, subjectType, request.Size);
 
             if (loadedPicture != null && request.Size.HasValue)
             {
-                loadedPicture = await pictureTools.ResizeAndSquareCropAsync(loadedPicture, request.Size.Value,cancellationToken);
+                var invalidSize = loadedPicture.Size.Height != request.Size.Value ||
+                                  loadedPicture.Size.Width != request.Size.Value;
+                if (invalidSize)
+                {
+                    loadedPicture = await pictureTools.NormalizeAsync(loadedPicture, request.Size.Value, cancellationToken);
+                    if (loadedPicture == null)
+                        throw new InvalidOperationException("Can't normalize picture");
+                }
             }
 
             byte[]? pictureBin = null;
@@ -50,6 +56,9 @@ namespace AvaStorage.Application.UseCases.GetAvatar
             AvatarPicture? loadedPicture = size.HasValue
                 ? await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value)
                 : await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId);
+
+            if (loadedPicture != null)
+                return loadedPicture;
 
             if (size.HasValue)
                 loadedPicture = await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value);
