@@ -1,7 +1,5 @@
 using System.Net;
 using AvaStorage.Application.UseCases.PutAvatar;
-using AvaStorage.Domain.Repositories;
-using AvaStorage.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -11,22 +9,21 @@ using Xunit.Abstractions;
 
 namespace AvaStorage.Tests
 {
-    public class AdminApiBehavior : IClassFixture<TestApiFixture<Program, IAdminContractV1>>
+    public class AdminPutApiBehavior : IClassFixture<TestApiFixture<Program, IAdminContractV1>>
     {
         private readonly TestApiFixture<Program, IAdminContractV1> _fxt;
 
-        public AdminApiBehavior(TestApiFixture<Program, IAdminContractV1> fxt, ITestOutputHelper output)
+        public AdminPutApiBehavior(TestApiFixture<Program, IAdminContractV1> fxt, ITestOutputHelper output)
         {
             fxt.Output = output;
             _fxt = fxt;
         }
-        
+
         [Fact]
         public async Task ShouldPutPicture()
         {
             //Arrange
             var putHandlerMock = new Mock<IRequestHandler<PutAvatarCommand>>();
-            var repoMock = new Mock<IPictureRepository>();
 
             var outHandlerDescriptor = ServiceDescriptor.Transient(typeof(IRequestHandler<PutAvatarCommand>), s => putHandlerMock.Object);
 
@@ -34,20 +31,12 @@ namespace AvaStorage.Tests
                 (
                     s => s
                         .Replace(outHandlerDescriptor)
-                        .AddSingleton(repoMock.Object),
-                    c =>
-                    {
-                        c.BaseAddress = new UriBuilder(c.BaseAddress!)
-                        {
-                            Port = ListenConstants.AdminPort 
-                        }.Uri;
-                    });
+                        .AddSingleton(TestTools.DefaultRepoMock.Object),
+                    TestTools.SetAdminPort);
             var client = proxyAsset.ApiClient;
 
-            var pictureBin = new byte[] { 1, 2, 3 };
-
             //Act
-            var response = await client.PutAsync("foo", pictureBin);
+            var response = await client.PutAsync("foo", TestTools.PictureBin);
 
             //Assert
             Assert.NotNull(response);
@@ -72,11 +61,10 @@ namespace AvaStorage.Tests
         public async Task ShouldReturn400WhenPutBadRequest(string id, byte[] picBin)
         {
             //Arrange
-            var repoMock = new Mock<IPictureRepository>();
 
             var proxyAsset = _fxt.StartWithProxy
                 (
-                    s => s.AddSingleton(repoMock.Object),
+                    s => s.AddSingleton(TestTools.DefaultRepoMock.Object),
                     c =>
                     {
                         c.BaseAddress = new UriBuilder(c.BaseAddress!)
