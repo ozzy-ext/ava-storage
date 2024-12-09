@@ -36,7 +36,7 @@ namespace AvaStorage.Application.Tests
                 r => r.SavePictureAsync
                 (
                     It.Is<AvatarId>(v => v.Value == "foo"),
-                    It.Is<AvatarPicture>(v => v.Size.Width == 436 && v.Size.Height == 395)
+                    It.IsAny<AvatarPictureBin>()
                 )
             );
             repo.VerifyNoOtherCalls();

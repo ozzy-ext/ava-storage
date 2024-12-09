@@ -1,16 +1,15 @@
-﻿using System.Drawing;
-using AvaStorage.Domain.ValueObjects;
+﻿using AvaStorage.Domain.ValueObjects;
 
 namespace AvaStorage.Domain.Repositories
 {
     public interface IPictureRepository
     {
-        Task SavePictureAsync(AvatarId id, AvatarPicture picture);
-        Task<AvatarPicture?> LoadOriginalPersonalPictureAsync(AvatarId id);
-        Task<AvatarPicture?> LoadPersonalPictureWithSizeAsync(AvatarId id, int size);
-        Task<AvatarPicture?> LoadDefaultSubjectTypePictureAsync(SubjectType subjectType);
-        Task<AvatarPicture?> LoadSubjectTypePictureWithSizeAsync(SubjectType subjectType, int size);
-        Task<AvatarPicture?> LoadDefaultPictureAsync();
-        Task<AvatarPicture?> LoadDefaultPictureWithSizeAsync(int size);
+        Task SavePictureAsync(AvatarId id, AvatarPictureBin pictureBin);
+        Task<AvatarPictureBin?> LoadOriginalPersonalPictureAsync(AvatarId id);
+        Task<AvatarPictureBin?> LoadPersonalPictureWithSizeAsync(AvatarId id, int size);
+        Task<AvatarPictureBin?> LoadDefaultSubjectTypePictureAsync(SubjectType subjectType);
+        Task<AvatarPictureBin?> LoadSubjectTypePictureWithSizeAsync(SubjectType subjectType, int size);
+        Task<AvatarPictureBin?> LoadDefaultPictureAsync();
+        Task<AvatarPictureBin?> LoadDefaultPictureWithSizeAsync(int size);
     }
 }

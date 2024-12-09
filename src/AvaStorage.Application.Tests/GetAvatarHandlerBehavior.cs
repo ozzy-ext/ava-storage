@@ -23,7 +23,6 @@ namespace AvaStorage.Application.Tests
 
             //Assert
             AssertTheSamePicture(result);
-            _picToolsMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -41,7 +40,6 @@ namespace AvaStorage.Application.Tests
 
             //Assert
             AssertTheSamePicture(result);
-            _picToolsMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -59,7 +57,6 @@ namespace AvaStorage.Application.Tests
 
             //Assert
             AssertTheSamePicture(result);
-            _picToolsMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -77,7 +74,6 @@ namespace AvaStorage.Application.Tests
 
             //Assert
             AssertTheSamePicture(result);
-            _picToolsMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -95,7 +91,6 @@ namespace AvaStorage.Application.Tests
 
             //Assert
             AssertTheSamePicture(result);
-            _picToolsMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -113,23 +108,31 @@ namespace AvaStorage.Application.Tests
 
             //Assert
             AssertTheSamePicture(result);
-            _picToolsMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task ShouldNormalizePicture()
         {
             //Arrange
-            var originPic = new AvatarPicture(TestPicBin, new PictureSize(128, 64));
-            var modifiedPic = new AvatarPicture(new byte[]{3, 2, 1}, new PictureSize(64, 64));
+            var originPic = new AvatarPicture(_testAva64, new PictureSize(128, 64));
+            var modifiedPic = new AvatarPicture(new AvatarPictureBin(new byte[]{3, 2, 1}), new PictureSize(64, 64));
 
             _picRepoMock
                 .Setup(r => r.LoadDefaultPictureAsync())
-                .ReturnsAsync(originPic);
+                .ReturnsAsync(_testAva64);
 
             var picToolsMock = new Mock<IPictureTools>();
+
             picToolsMock
-                .Setup(t => t.NormalizeAsync
+                .Setup(t => t.DeserializeAsync
+                (
+                    It.IsAny<AvatarPictureBin>(),
+                    It.IsAny<CancellationToken>()
+                ))
+                .ReturnsAsync(originPic);
+
+            picToolsMock
+                .Setup(t => t.FitIntoSizeAsync
                     (
                         It.IsAny<AvatarPicture>(), 
                         It.IsAny<int>(), 
@@ -147,8 +150,7 @@ namespace AvaStorage.Application.Tests
             //Assert
             Assert.NotNull(result);
             Assert.NotNull(result.AvatarPicture);
-            Assert.Equal(modifiedPic.Binary, result.AvatarPicture);
-            _picToolsMock.VerifyNoOtherCalls();
+            Assert.Equal(modifiedPic.Binary.Binary, result.AvatarPicture);
         }
     }
 }

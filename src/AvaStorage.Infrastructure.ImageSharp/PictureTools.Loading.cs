@@ -6,9 +6,9 @@ namespace AvaStorage.Infrastructure.ImageSharp;
 
 public partial class PictureTools
 {
-    public async Task<AvatarPicture?> DeserializeAsync(byte[] binary, CancellationToken cancellationToken)
+    public async Task<AvatarPicture?> DeserializeAsync(AvatarPictureBin binary, CancellationToken cancellationToken)
     {
-        using var mem = new MemoryStream(binary);
+        using var mem = new MemoryStream(binary.Binary.ToArray());
 
         ImageInfo imgInfo;
 
@@ -43,7 +43,7 @@ public partial class PictureTools
         await img.SaveAsync(mem, new PngEncoder(), CancellationToken.None);
         img.Dispose();
 
-        return AvatarPicture.TryLoad(mem.ToArray(), new PictureSize(img.Width, img.Height), out var avaPic)
+        return AvatarPicture.TryLoad(new AvatarPictureBin(mem.ToArray()), new PictureSize(img.Width, img.Height), out var avaPic)
             ? avaPic
             : null;
     }

@@ -4,8 +4,8 @@ namespace AvaStorage.Infrastructure.Services
 {
     public interface IPictureTools
     {
-        Task<AvatarPicture?> DeserializeAsync(byte[] binary, CancellationToken cancellationToken);
+        Task<AvatarPicture?> DeserializeAsync(AvatarPictureBin binary, CancellationToken cancellationToken);
 
-        Task<AvatarPicture> NormalizeAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken);
+        Task<AvatarPicture> FitIntoSizeAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken);
     }
 }

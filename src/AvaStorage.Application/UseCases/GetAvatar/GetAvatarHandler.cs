@@ -27,17 +27,23 @@ namespace AvaStorage.Application.UseCases.GetAvatar
             if (request.Size.HasValue && !new PictureSizeValidator(options.Value.MaxSize).IsValid(request.Size.Value))
                 throw new ValidationException("Wrong size value");
 
-            var loadedPicture = await LoadedPictureAsync(avatarId!, subjectType, request.Size);
+            var loadedPictureBin = await LoadedPictureAsync(avatarId!, subjectType, request.Size);
+            AvatarPicture? loadedPicture = null;
 
-            if (loadedPicture != null && request.Size.HasValue)
+            if (loadedPictureBin != null)
             {
-                var invalidSize = loadedPicture.Size.Height != request.Size.Value ||
-                                  loadedPicture.Size.Width != request.Size.Value;
-                if (invalidSize)
+                loadedPicture = await pictureTools.DeserializeAsync(loadedPictureBin, cancellationToken);
+
+                if (loadedPicture != null && request.Size.HasValue)
                 {
-                    loadedPicture = await pictureTools.NormalizeAsync(loadedPicture, request.Size.Value, cancellationToken);
-                    if (loadedPicture == null)
-                        throw new InvalidOperationException("Can't normalize picture");
+                    var invalidSize = loadedPicture.Size.Height != request.Size.Value ||
+                                      loadedPicture.Size.Width != request.Size.Value;
+                    if (invalidSize)
+                    {
+                        loadedPicture = await pictureTools.FitIntoSizeAsync(loadedPicture, request.Size.Value, cancellationToken);
+                        if (loadedPicture == null)
+                            throw new InvalidOperationException("Can't normalize picture");
+                    }
                 }
             }
 
@@ -45,43 +51,43 @@ namespace AvaStorage.Application.UseCases.GetAvatar
 
             if (loadedPicture != null)
             {
-                pictureBin = loadedPicture.Binary.ToArray();
+                pictureBin = loadedPicture.Binary.Binary.ToArray();
             }
 
             return new GetAvatarResult(pictureBin);
         }
 
-        private async Task<AvatarPicture?> LoadedPictureAsync(AvatarId avatarId, SubjectType? subjectType, int? size)
+        private async Task<AvatarPictureBin?> LoadedPictureAsync(AvatarId avatarId, SubjectType? subjectType, int? size)
         {
-            AvatarPicture? loadedPicture = size.HasValue
+            AvatarPictureBin? loadedPictureBin = size.HasValue
                 ? await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value)
                 : await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId);
 
-            if (loadedPicture != null)
-                return loadedPicture;
+            if (loadedPictureBin != null)
+                return loadedPictureBin;
 
             if (size.HasValue)
-                loadedPicture = await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value);
-            loadedPicture ??= await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId);
+                loadedPictureBin = await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value);
+            loadedPictureBin ??= await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId);
 
-            if (loadedPicture != null) 
-                return loadedPicture;
+            if (loadedPictureBin != null) 
+                return loadedPictureBin;
             
             if (subjectType != null)
             {
                 if(size.HasValue)
-                    loadedPicture = await pictureRepo.LoadSubjectTypePictureWithSizeAsync(subjectType, size.Value);
-                loadedPicture ??= await pictureRepo.LoadDefaultSubjectTypePictureAsync(subjectType);
+                    loadedPictureBin = await pictureRepo.LoadSubjectTypePictureWithSizeAsync(subjectType, size.Value);
+                loadedPictureBin ??= await pictureRepo.LoadDefaultSubjectTypePictureAsync(subjectType);
             }
 
-            if (loadedPicture != null)
-                return loadedPicture;
+            if (loadedPictureBin != null)
+                return loadedPictureBin;
 
             if (size.HasValue)
-                loadedPicture = await pictureRepo.LoadDefaultPictureWithSizeAsync(size.Value);
-            loadedPicture ??= await pictureRepo.LoadDefaultPictureAsync();
+                loadedPictureBin = await pictureRepo.LoadDefaultPictureWithSizeAsync(size.Value);
+            loadedPictureBin ??= await pictureRepo.LoadDefaultPictureAsync();
 
-            return loadedPicture;
+            return loadedPictureBin;
         }
     }
 }

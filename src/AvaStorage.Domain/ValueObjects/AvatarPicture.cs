@@ -1,22 +1,20 @@
-﻿using System.Collections.Immutable;
-
-namespace AvaStorage.Domain.ValueObjects
+﻿namespace AvaStorage.Domain.ValueObjects
 {
     public record AvatarPicture
     {
-        public ImmutableArray<byte> Binary { get; }
+        public AvatarPictureBin Binary { get; }
         public PictureSize Size { get; }
 
-        public AvatarPicture(byte[] binary, PictureSize size)
+        public AvatarPicture(AvatarPictureBin binary, PictureSize size)
         {
             if (!IsValid(binary, size))
                 throw new InvalidOperationException("Invalid parameters");
 
-            Binary = binary.ToImmutableArray();
+            Binary = binary;
             Size = size;
         }
 
-        public static bool TryLoad(byte[] binary, PictureSize size, out AvatarPicture? picture)
+        public static bool TryLoad(AvatarPictureBin binary, PictureSize size, out AvatarPicture? picture)
         {
             if (!IsValid(binary, size))
             {
@@ -28,9 +26,9 @@ namespace AvaStorage.Domain.ValueObjects
             return true;
         }
 
-        public static bool IsValid(byte[] binary, PictureSize size)
+        public static bool IsValid(AvatarPictureBin? binary, PictureSize? size)
         {
-            return binary != null;
+            return size != null && binary?.Binary is { Length: > 0 };
         }
     }
 }

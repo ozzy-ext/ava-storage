@@ -21,11 +21,19 @@ public partial class GetAvatarHandlerBehavior
 
     private readonly AvatarPicture _absentPicture = null;
 
-    private readonly AvatarPicture _testAva64 = new (TestPicBin, new PictureSize(64, 64));
+    private readonly AvatarPictureBin _testAva64 = new (TestPicBin);
 
     public GetAvatarHandlerBehavior()
     {
         _handler = new GetAvatarHandler(DefaultOptions, _picRepoMock.Object, _picToolsMock.Object);
+        _picToolsMock
+            .Setup(t => t.DeserializeAsync
+            (
+                It.IsAny<AvatarPictureBin>(),
+                It.IsAny<CancellationToken>()
+            ))
+            .Returns<AvatarPictureBin, CancellationToken>((bin, _) =>
+                Task.FromResult((AvatarPicture?)new AvatarPicture(bin, new PictureSize(64, 64))));
     }
 
     private void AssertTheSamePicture(GetAvatarResult avatarResult)

@@ -21,7 +21,10 @@ namespace AvaStorage.Application.UseCases.PutAvatar
             if (!AvatarId.TryParse(request.Id, out var avatarId))
                 throw new ValidationException("Avatar ID has wrong format");
 
-            var avatarPicture = await pictureTools.DeserializeAsync(request.Picture, cancellationToken);
+            if(!AvatarPictureBin.TryDeserialize(request.Picture, out var pictureBin))
+                throw new ValidationException("Avatar picture wrong binary");
+
+            var avatarPicture = await pictureTools.DeserializeAsync(pictureBin!, cancellationToken);
 
             if (avatarPicture == null)
                 throw new ValidationException("Avatar picture has wrong format");
@@ -29,7 +32,7 @@ namespace AvaStorage.Application.UseCases.PutAvatar
             if(!new PictureValidator(options.Value.MaxSize).IsValid(avatarPicture!))
                 throw new ValidationException("Avatar picture is invalid");
 
-            await pictureRepo.SavePictureAsync(avatarId!, avatarPicture!);
+            await pictureRepo.SavePictureAsync(avatarId!, avatarPicture.Binary);
         }
     }
 }

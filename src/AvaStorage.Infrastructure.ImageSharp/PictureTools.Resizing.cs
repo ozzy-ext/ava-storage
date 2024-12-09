@@ -9,9 +9,9 @@ namespace AvaStorage.Infrastructure.ImageSharp
 {
     public partial class PictureTools : IPictureTools
     {
-        public async Task<AvatarPicture> NormalizeAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken)
+        public async Task<AvatarPicture> FitIntoSizeAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken)
         {
-            using var readMem = new MemoryStream(origin.Binary.ToArray());
+            using var readMem = new MemoryStream(origin.Binary.Binary.ToArray());
             using var img = await Image.LoadAsync(readMem, cancellationToken);
 
             if (img.Width == targetSize && img.Height == targetSize)
@@ -27,7 +27,7 @@ namespace AvaStorage.Infrastructure.ImageSharp
             using var writeMem = new MemoryStream();
             await img.SaveAsync(writeMem, new PngEncoder(), cancellationToken);
 
-            return new AvatarPicture(writeMem.ToArray(), new PictureSize(img.Width, img.Height));
+            return new AvatarPicture(new AvatarPictureBin(writeMem.ToArray()), new PictureSize(img.Width, img.Height));
 
         }
     }
