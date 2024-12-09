@@ -1,13 +1,14 @@
-﻿using AvaStorage.Domain.ValueObjects;
-using AvaStorage.Infrastructure.Services;
-using AvaStorage.Infrastructure.Tools;
+﻿using AvaStorage.Application;
+using AvaStorage.Application.Services;
+using AvaStorage.Application.Tools;
+using AvaStorage.Domain.ValueObjects;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
 
 namespace AvaStorage.Infrastructure.ImageSharp
 {
-    public partial class PictureTools : IPictureTools
+    public partial class ImageSharpPictureTools : IPictureTools
     {
         public async Task<AvatarPicture> FitIntoSizeAsync(AvatarPicture origin, int targetSize, CancellationToken cancellationToken)
         {

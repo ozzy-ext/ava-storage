@@ -13,7 +13,7 @@ namespace AvaStorage.Domain.Tests
         {
             //Arrange
             var validator = new PictureValidator(512);
-            var avaPicture = await PictureTools.LoadFromFileAsync(Path.Combine("files",filename), CancellationToken.None);
+            var avaPicture = await ImageSharpPictureTools.LoadFromFileAsync(Path.Combine("files",filename), CancellationToken.None);
 
             //Act
             bool validationResult = validator.IsValid(avaPicture!);

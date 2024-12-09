@@ -1,4 +1,4 @@
-﻿namespace AvaStorage.Infrastructure.Tools
+﻿namespace AvaStorage.Application.Tools
 {
     public static class PictureResizeCalculator
     {

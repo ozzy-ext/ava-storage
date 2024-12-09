@@ -1,6 +1,6 @@
-﻿using AvaStorage.Application.UseCases.GetAvatar;
+﻿using AvaStorage.Application.Services;
+using AvaStorage.Application.UseCases.GetAvatar;
 using AvaStorage.Domain.ValueObjects;
-using AvaStorage.Infrastructure.Services;
 using Moq;
 
 namespace AvaStorage.Application.Tests

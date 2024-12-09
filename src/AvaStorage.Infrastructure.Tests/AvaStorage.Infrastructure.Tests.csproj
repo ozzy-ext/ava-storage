@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvaStorage.Infrastructure\AvaStorage.Infrastructure.csproj" />
+    <ProjectReference Include="..\AvaStorage.Application\AvaStorage.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,6 +2,7 @@ using System.Net;
 using AvaStorage;
 using AvaStorage.Application;
 using AvaStorage.ByteArrayFormatting;
+using AvaStorage.Infrastructure.ImageSharp;
 using MyLab.WebErrors;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddControllers(c =>
     c.AddExceptionProcessing();
 });
 builder.Services.AddAvaServiceLogic();
+builder.Services.AddAvaStorageImageSharpInfrastructure();
 builder.Services.ConfigureAvaServiceLogic(builder.Configuration);
 
 builder.WebHost.ConfigureKestrel((ctx, opt) =>

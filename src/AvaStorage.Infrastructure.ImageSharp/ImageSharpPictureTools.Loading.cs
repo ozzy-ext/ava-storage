@@ -4,7 +4,7 @@ using SixLabors.ImageSharp.Formats.Png;
 
 namespace AvaStorage.Infrastructure.ImageSharp;
 
-public partial class PictureTools
+public partial class ImageSharpPictureTools
 {
     public async Task<AvatarPicture?> DeserializeAsync(AvatarPictureBin binary, CancellationToken cancellationToken)
     {

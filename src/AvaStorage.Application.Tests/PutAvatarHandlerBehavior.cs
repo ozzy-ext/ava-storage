@@ -17,7 +17,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var repo = new Mock<IPictureRepository>();
             var options = new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
-            var handler = new PutAvatarHandler(options, repo.Object, new PictureTools());
+            var handler = new PutAvatarHandler(options, repo.Object, new ImageSharpPictureTools());
 
             var picBin = await File.ReadAllBytesAsync("files\\norm.jpg");
 
@@ -49,7 +49,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var repo = new Mock<IPictureRepository>();
             var options = new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
-            var handler = new PutAvatarHandler(options, repo.Object, new PictureTools());
+            var handler = new PutAvatarHandler(options, repo.Object, new ImageSharpPictureTools());
 
             var putCmd = new PutAvatarCommand
             (

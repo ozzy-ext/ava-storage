@@ -1,6 +1,6 @@
 ﻿using AvaStorage.Domain.ValueObjects;
 
-namespace AvaStorage.Infrastructure.Services
+namespace AvaStorage.Application.Services
 {
     public interface IPictureTools
     {

@@ -5,7 +5,7 @@ using AvaStorage.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
-using AvaStorage.Infrastructure.Services;
+using AvaStorage.Application.Services;
 
 namespace AvaStorage.Application.UseCases.GetAvatar
 {

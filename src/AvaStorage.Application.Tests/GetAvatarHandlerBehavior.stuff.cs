@@ -1,8 +1,8 @@
 ﻿using AvaStorage.Application.Options;
+using AvaStorage.Application.Services;
 using AvaStorage.Application.UseCases.GetAvatar;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.ValueObjects;
-using AvaStorage.Infrastructure.Services;
 using Microsoft.Extensions.Options;
 using Moq;
 
