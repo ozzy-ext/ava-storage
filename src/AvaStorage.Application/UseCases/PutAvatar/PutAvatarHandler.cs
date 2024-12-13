@@ -32,7 +32,7 @@ namespace AvaStorage.Application.UseCases.PutAvatar
             if(!new PictureValidator(options.Value.MaxSize).IsValid(avatarPicture!))
                 throw new ValidationException("Avatar picture is invalid");
 
-            await pictureRepo.SavePictureAsync(avatarId!, avatarPicture.Binary);
+            await pictureRepo.SavePictureAsync(avatarId!, avatarPicture.Binary, cancellationToken);
         }
     }
 }

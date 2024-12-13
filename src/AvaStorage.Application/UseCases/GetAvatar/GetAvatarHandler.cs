@@ -27,7 +27,7 @@ namespace AvaStorage.Application.UseCases.GetAvatar
             if (request.Size.HasValue && !new PictureSizeValidator(options.Value.MaxSize).IsValid(request.Size.Value))
                 throw new ValidationException("Wrong size value");
 
-            var loadedPictureBin = await LoadedPictureAsync(avatarId!, subjectType, request.Size);
+            var loadedPictureBin = await LoadedPictureAsync(avatarId!, subjectType, request.Size, cancellationToken);
             AvatarPicture? loadedPicture = null;
 
             if (loadedPictureBin != null)
@@ -57,18 +57,18 @@ namespace AvaStorage.Application.UseCases.GetAvatar
             return new GetAvatarResult(pictureBin);
         }
 
-        private async Task<AvatarPictureBin?> LoadedPictureAsync(AvatarId avatarId, SubjectType? subjectType, int? size)
+        private async Task<AvatarPictureBin?> LoadedPictureAsync(AvatarId avatarId, SubjectType? subjectType, int? size, CancellationToken cancellationToken)
         {
             AvatarPictureBin? loadedPictureBin = size.HasValue
-                ? await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value)
-                : await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId);
+                ? await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value, cancellationToken)
+                : await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId, cancellationToken);
 
             if (loadedPictureBin != null)
                 return loadedPictureBin;
 
             if (size.HasValue)
-                loadedPictureBin = await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value);
-            loadedPictureBin ??= await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId);
+                loadedPictureBin = await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value, cancellationToken);
+            loadedPictureBin ??= await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId, cancellationToken);
 
             if (loadedPictureBin != null) 
                 return loadedPictureBin;
@@ -76,16 +76,16 @@ namespace AvaStorage.Application.UseCases.GetAvatar
             if (subjectType != null)
             {
                 if(size.HasValue)
-                    loadedPictureBin = await pictureRepo.LoadSubjectTypePictureWithSizeAsync(subjectType, size.Value);
-                loadedPictureBin ??= await pictureRepo.LoadDefaultSubjectTypePictureAsync(subjectType);
+                    loadedPictureBin = await pictureRepo.LoadSubjectTypePictureWithSizeAsync(subjectType, size.Value, cancellationToken);
+                loadedPictureBin ??= await pictureRepo.LoadDefaultSubjectTypePictureAsync(subjectType, cancellationToken);
             }
 
             if (loadedPictureBin != null)
                 return loadedPictureBin;
 
             if (size.HasValue)
-                loadedPictureBin = await pictureRepo.LoadDefaultPictureWithSizeAsync(size.Value);
-            loadedPictureBin ??= await pictureRepo.LoadDefaultPictureAsync();
+                loadedPictureBin = await pictureRepo.LoadDefaultPictureWithSizeAsync(size.Value, cancellationToken);
+            loadedPictureBin ??= await pictureRepo.LoadDefaultPictureAsync(cancellationToken);
 
             return loadedPictureBin;
         }

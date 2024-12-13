@@ -13,7 +13,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             _picRepoMock
-                .Setup(r => r.LoadOriginalPersonalPictureAsync("foo"))
+                .Setup(r => r.LoadOriginalPersonalPictureAsync("foo", It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_testAva64);
             
             var getCmd = new GetAvatarCommand("foo", null, null);
@@ -30,7 +30,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             _picRepoMock
-                .Setup(r => r.LoadPersonalPictureWithSizeAsync("foo", 64))
+                .Setup(r => r.LoadPersonalPictureWithSizeAsync("foo", 64, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, null);
@@ -47,7 +47,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             _picRepoMock
-                .Setup(r => r.LoadSubjectTypePictureWithSizeAsync("bar", 64))
+                .Setup(r => r.LoadSubjectTypePictureWithSizeAsync("bar", 64, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
@@ -64,7 +64,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             _picRepoMock
-                .Setup(r => r.LoadDefaultSubjectTypePictureAsync("bar"))
+                .Setup(r => r.LoadDefaultSubjectTypePictureAsync("bar", It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
@@ -81,7 +81,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             _picRepoMock
-                .Setup(r => r.LoadDefaultPictureWithSizeAsync(64))
+                .Setup(r => r.LoadDefaultPictureWithSizeAsync(64, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
@@ -98,7 +98,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             _picRepoMock
-                .Setup(r => r.LoadDefaultPictureAsync())
+                .Setup(r => r.LoadDefaultPictureAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
@@ -118,7 +118,7 @@ namespace AvaStorage.Application.Tests
             var modifiedPic = new AvatarPicture(new AvatarPictureBin(new byte[]{3, 2, 1}), new PictureSize(64, 64));
 
             _picRepoMock
-                .Setup(r => r.LoadDefaultPictureAsync())
+                .Setup(r => r.LoadDefaultPictureAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_testAva64);
 
             var picToolsMock = new Mock<IPictureTools>();
