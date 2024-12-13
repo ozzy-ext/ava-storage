@@ -23,9 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Infrastructure.I
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Infrastructure.Tests", "AvaStorage.Infrastructure.Tests\AvaStorage.Infrastructure.Tests.csproj", "{66299FFC-21C8-43D6-849E-C31D58D7C262}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Infrastructure.LocalDisk", "AvaStorage.Infrastructure.LocalDisk\AvaStorage.Infrastructure.LocalDisk.csproj", "{00309EA6-6BCE-41A6-AF82-8ABE90402C25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Infrastructure.LocalDisk", "AvaStorage.Infrastructure.LocalDisk\AvaStorage.Infrastructure.LocalDisk.csproj", "{00309EA6-6BCE-41A6-AF82-8ABE90402C25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,10 +59,6 @@ Global
 		{7139E6BE-56C3-4C15-8BF0-229B7059EC46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7139E6BE-56C3-4C15-8BF0-229B7059EC46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7139E6BE-56C3-4C15-8BF0-229B7059EC46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66299FFC-21C8-43D6-849E-C31D58D7C262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66299FFC-21C8-43D6-849E-C31D58D7C262}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66299FFC-21C8-43D6-849E-C31D58D7C262}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66299FFC-21C8-43D6-849E-C31D58D7C262}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00309EA6-6BCE-41A6-AF82-8ABE90402C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00309EA6-6BCE-41A6-AF82-8ABE90402C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00309EA6-6BCE-41A6-AF82-8ABE90402C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -80,7 +74,6 @@ Global
 		{0C4E1919-1E24-426E-9075-7E27F1C0266C} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
 		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
 		{7139E6BE-56C3-4C15-8BF0-229B7059EC46} = {059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}
-		{66299FFC-21C8-43D6-849E-C31D58D7C262} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
 		{00309EA6-6BCE-41A6-AF82-8ABE90402C25} = {059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

@@ -1,7 +1,6 @@
-using AvaStorage.Application;
 using AvaStorage.Application.Tools;
 
-namespace AvaStorage.Infrastructure.Tests
+namespace AvaStorage.Application.Tests
 {
     public class PictureResizeCalculatorBehavior
     {
