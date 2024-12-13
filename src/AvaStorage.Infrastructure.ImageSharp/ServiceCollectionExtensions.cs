@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AvaStorage.Application.Services;
-using AvaStorage.Domain.Repositories;
+﻿using AvaStorage.Application.Services;
+using AvaStorage.Infrastructure.ImageSharp.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AvaStorage.Infrastructure.ImageSharp

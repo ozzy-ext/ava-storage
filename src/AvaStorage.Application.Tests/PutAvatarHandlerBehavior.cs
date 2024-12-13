@@ -4,6 +4,7 @@ using AvaStorage.Application.UseCases.PutAvatar;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.ValueObjects;
 using AvaStorage.Infrastructure.ImageSharp;
+using AvaStorage.Infrastructure.ImageSharp.Services;
 using Microsoft.Extensions.Options;
 using Moq;
 
