@@ -18,6 +18,10 @@ namespace AvaStorage.Tests
         {
             Port = ListenConstants.AdminPort
         }.Uri;
+        public static readonly Action<HttpClient> SetPublicPort = cl => cl.BaseAddress = new UriBuilder(cl.BaseAddress!)
+        {
+            Port = ListenConstants.PublicPort
+        }.Uri;
 
         public static readonly Mock<IPictureRepository> DefaultRepoMock = new();
 

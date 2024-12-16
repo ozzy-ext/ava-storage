@@ -24,8 +24,8 @@ builder.Services.ConfigureLocalDiscPictureStorage(builder.Configuration, "AvaSto
 
 builder.WebHost.ConfigureKestrel((ctx, opt) =>
 {
-    opt.Listen(IPAddress.Loopback, ListenConstants.PublicPort);
-    opt.Listen(IPAddress.Loopback, ListenConstants.AdminPort);
+    opt.Listen(IPAddress.Any, ListenConstants.PublicPort);
+    opt.Listen(IPAddress.Any, ListenConstants.AdminPort);
 });
 
 var app = builder.Build();
