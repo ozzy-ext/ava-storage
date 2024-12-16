@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Infrastructure.L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Infrastructure.ImageSharp.Tests", "AvaStorage.Infrastructure.ImageSharp.Tests\AvaStorage.Infrastructure.ImageSharp.Tests.csproj", "{F97EC702-9AB5-4902-87F3-D01C66CBD933}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Infrastructure.LocalDisk.Tests", "AvaStorage.Infrastructure.LocalDisk.Tests\AvaStorage.Infrastructure.LocalDisk.Tests.csproj", "{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{F97EC702-9AB5-4902-87F3-D01C66CBD933}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F97EC702-9AB5-4902-87F3-D01C66CBD933}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F97EC702-9AB5-4902-87F3-D01C66CBD933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{7139E6BE-56C3-4C15-8BF0-229B7059EC46} = {059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}
 		{00309EA6-6BCE-41A6-AF82-8ABE90402C25} = {059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}
 		{F97EC702-9AB5-4902-87F3-D01C66CBD933} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81603E0C-F8F6-4075-A55A-284D944721FF}

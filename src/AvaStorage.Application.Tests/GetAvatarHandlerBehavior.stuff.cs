@@ -1,4 +1,5 @@
-﻿using AvaStorage.Application.Options;
+﻿using AutoFixture;
+using AvaStorage.Application.Options;
 using AvaStorage.Application.Services;
 using AvaStorage.Application.UseCases.GetAvatar;
 using AvaStorage.Domain.Repositories;
@@ -23,6 +24,8 @@ public partial class GetAvatarHandlerBehavior
 
     private readonly AvatarPictureBin _testAva64 = new (TestPicBin);
 
+
+    private readonly Fixture _fixture = new Fixture();
     public GetAvatarHandlerBehavior()
     {
         _handler = new GetAvatarHandler(DefaultOptions, _picRepoMock.Object, _picToolsMock.Object);

@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using AvaStorage.Application.Services;
+using AvaStorage.Domain.PictureAddressing;
 
 namespace AvaStorage.Application.UseCases.GetAvatar
 {
@@ -60,15 +61,8 @@ namespace AvaStorage.Application.UseCases.GetAvatar
         private async Task<AvatarPictureBin?> LoadedPictureAsync(AvatarId avatarId, SubjectType? subjectType, int? size, CancellationToken cancellationToken)
         {
             AvatarPictureBin? loadedPictureBin = size.HasValue
-                ? await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value, cancellationToken)
-                : await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId, cancellationToken);
-
-            if (loadedPictureBin != null)
-                return loadedPictureBin;
-
-            if (size.HasValue)
-                loadedPictureBin = await pictureRepo.LoadPersonalPictureWithSizeAsync(avatarId, size.Value, cancellationToken);
-            loadedPictureBin ??= await pictureRepo.LoadOriginalPersonalPictureAsync(avatarId, cancellationToken);
+                ? await pictureRepo.LoadPictureAsync(new PersonalWithSizePicAddrProvider(avatarId, size.Value), cancellationToken)
+                : await pictureRepo.LoadPictureAsync(new OriginalPersonalPicAddrProvider(avatarId), cancellationToken);
 
             if (loadedPictureBin != null) 
                 return loadedPictureBin;
@@ -76,16 +70,16 @@ namespace AvaStorage.Application.UseCases.GetAvatar
             if (subjectType != null)
             {
                 if(size.HasValue)
-                    loadedPictureBin = await pictureRepo.LoadSubjectTypePictureWithSizeAsync(subjectType, size.Value, cancellationToken);
-                loadedPictureBin ??= await pictureRepo.LoadDefaultSubjectTypePictureAsync(subjectType, cancellationToken);
+                    loadedPictureBin = await pictureRepo.LoadPictureAsync(new DefaultSubjectTypeWithSizeAddPicProvider(subjectType, size.Value), cancellationToken);
+                loadedPictureBin ??= await pictureRepo.LoadPictureAsync(new DefaultSubjectTypePicAddrProvider(subjectType), cancellationToken);
             }
 
             if (loadedPictureBin != null)
                 return loadedPictureBin;
 
             if (size.HasValue)
-                loadedPictureBin = await pictureRepo.LoadDefaultPictureWithSizeAsync(size.Value, cancellationToken);
-            loadedPictureBin ??= await pictureRepo.LoadDefaultPictureAsync(cancellationToken);
+                loadedPictureBin = await pictureRepo.LoadPictureAsync(new DefaultPicWithSizeAddrProvider(size.Value), cancellationToken);
+            loadedPictureBin ??= await pictureRepo.LoadPictureAsync(new DefaultPicAddrProvider(), cancellationToken);
 
             return loadedPictureBin;
         }

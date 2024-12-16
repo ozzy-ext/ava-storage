@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using AvaStorage.Application.Options;
 using AvaStorage.Application.UseCases.PutAvatar;
+using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.ValueObjects;
 using AvaStorage.Infrastructure.ImageSharp;
@@ -28,6 +29,8 @@ namespace AvaStorage.Application.Tests
                 picBin
             );
 
+            var expectedPicAddr = new OriginalPersonalPicAddrProvider("foo").ProvideAddress();
+
             //Act
             await handler.Handle(putCmd, CancellationToken.None);
 
@@ -36,7 +39,7 @@ namespace AvaStorage.Application.Tests
             (
                 r => r.SavePictureAsync
                 (
-                    It.Is<AvatarId>(v => v.Value == "foo"),
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
                     It.IsAny<AvatarPictureBin>(),
                     CancellationToken.None
                 )

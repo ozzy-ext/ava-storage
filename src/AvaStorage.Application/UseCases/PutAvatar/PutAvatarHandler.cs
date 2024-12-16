@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AvaStorage.Application.Options;
 using AvaStorage.Application.Services;
+using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.Tools;
 using AvaStorage.Domain.ValueObjects;
@@ -32,7 +33,7 @@ namespace AvaStorage.Application.UseCases.PutAvatar
             if(!new PictureValidator(options.Value.MaxSize).IsValid(avatarPicture!))
                 throw new ValidationException("Avatar picture is invalid");
 
-            await pictureRepo.SavePictureAsync(avatarId!, avatarPicture.Binary, cancellationToken);
+            await pictureRepo.SavePictureAsync(new OriginalPersonalPicAddrProvider(avatarId!), avatarPicture.Binary, cancellationToken);
         }
     }
 }

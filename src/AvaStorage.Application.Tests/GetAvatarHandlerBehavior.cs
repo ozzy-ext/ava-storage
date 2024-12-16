@@ -1,5 +1,6 @@
 ﻿using AvaStorage.Application.Services;
 using AvaStorage.Application.UseCases.GetAvatar;
+using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.ValueObjects;
 using Moq;
 
@@ -12,8 +13,12 @@ namespace AvaStorage.Application.Tests
         public async Task ShouldGetDefaultPictureIfNoRequiredSize()
         {
             //Arrange
+            var expectedPicAddr = new OriginalPersonalPicAddrProvider("foo").ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadOriginalPersonalPictureAsync("foo", It.IsAny<CancellationToken>()))
+                .Setup(r => r.LoadPictureAsync(
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr), 
+                    It.IsAny<CancellationToken>()
+                ))
                 .ReturnsAsync(_testAva64);
             
             var getCmd = new GetAvatarCommand("foo", null, null);
@@ -29,8 +34,12 @@ namespace AvaStorage.Application.Tests
         public async Task ShouldGetPictureWithSize()
         {
             //Arrange
+            var expectedPicAddr = new PersonalWithSizePicAddrProvider("foo", 64).ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadPersonalPictureWithSizeAsync("foo", 64, It.IsAny<CancellationToken>()))
+                .Setup(r => r.LoadPictureAsync(
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
+                    It.IsAny<CancellationToken>()
+                ))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, null);
@@ -46,8 +55,12 @@ namespace AvaStorage.Application.Tests
         public async Task ShouldGetSubjectTypePictureIfPersonalNotFound()
         {
             //Arrange
+            var expectedPicAddr = new DefaultSubjectTypeWithSizeAddPicProvider("bar", 64).ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadSubjectTypePictureWithSizeAsync("bar", 64, It.IsAny<CancellationToken>()))
+                .Setup(r => r.LoadPictureAsync(
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
+                    It.IsAny<CancellationToken>()
+                ))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
@@ -63,8 +76,12 @@ namespace AvaStorage.Application.Tests
         public async Task ShouldGetDefaultSubjectTypeIfNoSubjectTypeWithSize()
         {
             //Arrange
+            var expectedPicAddr = new DefaultSubjectTypePicAddrProvider("bar").ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadDefaultSubjectTypePictureAsync("bar", It.IsAny<CancellationToken>()))
+                .Setup(r => r.LoadPictureAsync(
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
+                    It.IsAny<CancellationToken>()
+                ))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
@@ -80,8 +97,12 @@ namespace AvaStorage.Application.Tests
         public async Task ShouldGetDefaultWithSizeIfNoSubjectPic()
         {
             //Arrange
+            var expectedPicAddr = new DefaultPicWithSizeAddrProvider(64).ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadDefaultPictureWithSizeAsync(64, It.IsAny<CancellationToken>()))
+                .Setup(r => r.LoadPictureAsync(
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
+                    It.IsAny<CancellationToken>()
+                ))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
@@ -97,8 +118,12 @@ namespace AvaStorage.Application.Tests
         public async Task ShouldGetDefaultIfNoDefaultWithSize()
         {
             //Arrange
+            var expectedPicAddr = new DefaultPicAddrProvider().ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadDefaultPictureAsync(It.IsAny<CancellationToken>()))
+                .Setup(r => r.LoadPictureAsync(
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
+                    It.IsAny<CancellationToken>()
+                ))
                 .ReturnsAsync(_testAva64);
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
@@ -117,8 +142,13 @@ namespace AvaStorage.Application.Tests
             var originPic = new AvatarPicture(_testAva64, new PictureSize(128, 64));
             var modifiedPic = new AvatarPicture(new AvatarPictureBin(new byte[]{3, 2, 1}), new PictureSize(64, 64));
 
+            var expectedPicAddr = new DefaultPicAddrProvider().ProvideAddress();
+
             _picRepoMock
-                .Setup(r => r.LoadDefaultPictureAsync(It.IsAny<CancellationToken>()))
+                .Setup(r => r.LoadPictureAsync(
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
+                    It.IsAny<CancellationToken>()
+                ))
                 .ReturnsAsync(_testAva64);
 
             var picToolsMock = new Mock<IPictureTools>();
