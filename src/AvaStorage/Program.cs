@@ -18,8 +18,9 @@ builder.Services.AddControllers(c =>
 });
 builder.Services.AddAvaServiceLogic();
 builder.Services.AddAvaStorageImageSharpInfrastructure();
-builder.Services.AddLocalDiscPictureRepository();
-builder.Services.ConfigureAvaServiceLogic(builder.Configuration);
+builder.Services.AddLocalDiscPictureStorage();
+builder.Services.ConfigureAvaServiceLogic(builder.Configuration, "AvaStorage");
+builder.Services.ConfigureLocalDiscPictureStorage(builder.Configuration, "AvaStorage");
 
 builder.WebHost.ConfigureKestrel((ctx, opt) =>
 {

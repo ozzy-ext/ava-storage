@@ -6,8 +6,6 @@ namespace AvaStorage.Application;
 
 public static class ServiceCollectionExtension
 {
-    public const string DefaultConfigSectionName = "AvaStorage";
-
     public static IServiceCollection AddAvaServiceLogic(this IServiceCollection services)
     {
         if (services == null) throw new ArgumentNullException(nameof(services));
@@ -16,7 +14,7 @@ public static class ServiceCollectionExtension
             .AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Anchor>());
     }
 
-    public static IServiceCollection ConfigureAvaServiceLogic(this IServiceCollection services, IConfiguration config, string sectionName = DefaultConfigSectionName)
+    public static IServiceCollection ConfigureAvaServiceLogic(this IServiceCollection services, IConfiguration config, string sectionName)
     {
         if (config == null)
             throw new ArgumentNullException(nameof(config));

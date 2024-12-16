@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AvaStorage.Tests
 {
-    static class TestTools
+    public static class TestTools
     {
         public static readonly Action<HttpClient> SetAdminPort = cl => cl.BaseAddress = new UriBuilder(cl.BaseAddress!)
         {

@@ -1,29 +1,33 @@
-﻿using AvaStorage.Domain.PictureAddressing;
+﻿using System.Security.AccessControl;
+using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.ValueObjects;
+using Microsoft.Extensions.Options;
 
 namespace AvaStorage.Infrastructure.LocalDisk
 {
     class LocalDiscPictureRepository : IPictureRepository
     {
-        private readonly ILocalFileProvider _fileProvider;
+        private readonly ILocalFileOperator _fileOperator;
 
-        public LocalDiscPictureRepository(ILocalFileProvider fileProvider)
+        public LocalDiscPictureRepository(ILocalFileOperator fileOperator)
         {
-            _fileProvider = fileProvider;
+            _fileOperator = fileOperator;
         }
 
-        public LocalDiscPictureRepository()
-            :this(new LocalFileProvider("/var/lib/ava-storage"))
+        public LocalDiscPictureRepository(IOptions<LocalDiskOptions> options)
+            :this(new LocalFileOperator(options.Value.LocalStoragePath))
         {
 
         }
 
         public Task SavePictureAsync(IPictureAddressProvider addressProvider, AvatarPictureBin pictureBin, CancellationToken cancellationToken)
         {
-            return File.WriteAllBytesAsync
+            var fileAddr = addressProvider.ProvideAddress();
+            
+            return _fileOperator.WriteFileAsync
             (
-                addressProvider.ProvideAddress(), 
+                fileAddr, 
                 pictureBin.Binary.ToArray(), 
                 cancellationToken
             );
@@ -32,7 +36,7 @@ namespace AvaStorage.Infrastructure.LocalDisk
         public async Task<AvatarPictureBin?> LoadPictureAsync(IPictureAddressProvider addressProvider, CancellationToken cancellationToken)
         {
             var filePath = addressProvider.ProvideAddress();
-            var fileBin = await _fileProvider.GetFileAsync(filePath, cancellationToken);
+            var fileBin = await _fileOperator.ReadFileAsync(filePath, cancellationToken);
 
             return fileBin != null
                 ? new AvatarPictureBin(fileBin)

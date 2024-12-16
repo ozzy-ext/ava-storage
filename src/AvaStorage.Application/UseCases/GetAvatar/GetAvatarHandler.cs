@@ -60,9 +60,22 @@ namespace AvaStorage.Application.UseCases.GetAvatar
 
         private async Task<AvatarPictureBin?> LoadedPictureAsync(AvatarId avatarId, SubjectType? subjectType, int? size, CancellationToken cancellationToken)
         {
-            AvatarPictureBin? loadedPictureBin = size.HasValue
-                ? await pictureRepo.LoadPictureAsync(new PersonalWithSizePicAddrProvider(avatarId, size.Value), cancellationToken)
-                : await pictureRepo.LoadPictureAsync(new OriginalPersonalPicAddrProvider(avatarId), cancellationToken);
+            AvatarPictureBin? loadedPictureBin = null;
+
+            if (size.HasValue)
+            {
+                loadedPictureBin = await pictureRepo.LoadPictureAsync
+                (
+                    new PersonalWithSizePicAddrProvider(avatarId, size.Value), 
+                    cancellationToken
+                );
+            }
+
+            loadedPictureBin ??= await pictureRepo.LoadPictureAsync
+            (
+                new OriginalPersonalPicAddrProvider(avatarId),
+                cancellationToken
+            );
 
             if (loadedPictureBin != null) 
                 return loadedPictureBin;

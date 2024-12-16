@@ -10,7 +10,7 @@ namespace AvaStorage.Application.Tests
     {
         
         [Fact]
-        public async Task ShouldGetDefaultPictureIfNoRequiredSize()
+        public async Task ShouldGetOriginalPictureIfSizeIsNotRequired()
         {
             //Arrange
             var expectedPicAddr = new OriginalPersonalPicAddrProvider("foo").ProvideAddress();
@@ -22,6 +22,27 @@ namespace AvaStorage.Application.Tests
                 .ReturnsAsync(_testAva64);
             
             var getCmd = new GetAvatarCommand("foo", null, null);
+
+            //Act
+            var result = await _handler.Handle(getCmd, CancellationToken.None);
+
+            //Assert
+            AssertTheSamePicture(result);
+        }
+
+        [Fact]
+        public async Task ShouldGetOriginalPictureIfSizedNotFound()
+        {
+            //Arrange
+            var expectedPicAddr = new OriginalPersonalPicAddrProvider("foo").ProvideAddress();
+            _picRepoMock
+                .Setup(r => r.LoadPictureAsync(
+                    It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
+                    It.IsAny<CancellationToken>()
+                ))
+                .ReturnsAsync(_testAva64);
+
+            var getCmd = new GetAvatarCommand("foo", 64, null);
 
             //Act
             var result = await _handler.Handle(getCmd, CancellationToken.None);

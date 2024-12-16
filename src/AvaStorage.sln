@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Infrastructure.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Infrastructure.LocalDisk.Tests", "AvaStorage.Infrastructure.LocalDisk.Tests\AvaStorage.Infrastructure.LocalDisk.Tests.csproj", "{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.IntegrationTests", "AvaStorage.IntegrationTests\AvaStorage.IntegrationTests.csproj", "{51020509-59D2-43A4-8D36-134FF60E0331}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51020509-59D2-43A4-8D36-134FF60E0331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51020509-59D2-43A4-8D36-134FF60E0331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51020509-59D2-43A4-8D36-134FF60E0331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51020509-59D2-43A4-8D36-134FF60E0331}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{00309EA6-6BCE-41A6-AF82-8ABE90402C25} = {059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}
 		{F97EC702-9AB5-4902-87F3-D01C66CBD933} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
 		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
+		{51020509-59D2-43A4-8D36-134FF60E0331} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81603E0C-F8F6-4075-A55A-284D944721FF}
