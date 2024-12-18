@@ -4,6 +4,7 @@ using AvaStorage.Application;
 using AvaStorage.ByteArrayFormatting;
 using AvaStorage.Infrastructure.ImageSharp;
 using AvaStorage.Infrastructure.LocalDisk;
+using AvaStorage.Middlewares;
 using MyLab.HttpMetrics;
 using MyLab.Log;
 using MyLab.WebErrors;
@@ -29,6 +30,7 @@ builder.Services
 
 builder.WebHost.ConfigureKestrel((ctx, opt) =>
 {
+    opt.AddServerHeader = false;
     opt.Listen(IPAddress.Any, ListenConstants.PublicPort);
     opt.Listen(IPAddress.Any, ListenConstants.AdminPort);
 });
@@ -36,6 +38,9 @@ builder.WebHost.ConfigureKestrel((ctx, opt) =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseMiddleware<AddRequestInfoHeaderMiddleware>();
+app.UseMiddleware<AddSenderHeaderMiddleware>();
 
 app.UseUrlBasedHttpMetrics();
 
