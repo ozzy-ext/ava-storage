@@ -34,7 +34,7 @@ namespace AvaStorage.Controllers
         public async Task<IActionResult> GetAsync
             (
                 [FromRoute(Name = "id")][Required]string id, 
-                [FromQuery(Name = "sz"), Range(0, 1024)]int? size, 
+                [FromQuery(Name = "sz"), Range(0, int.MaxValue)]int? size, 
                 [FromQuery(Name = "st")]string? subjectType, 
                 CancellationToken cancellationToken
             )
