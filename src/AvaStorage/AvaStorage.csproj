@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="MyLab.HttpMetrics" Version="1.1.3" />
+    <PackageReference Include="MyLab.Log" Version="3.6.29" />
+    <PackageReference Include="MyLab.Log.Dsl" Version="3.7.5" />
     <PackageReference Include="MyLab.WebErrors" Version="1.1.6" />
   </ItemGroup>
 

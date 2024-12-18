@@ -4,6 +4,8 @@ using AvaStorage.Application;
 using AvaStorage.ByteArrayFormatting;
 using AvaStorage.Infrastructure.ImageSharp;
 using AvaStorage.Infrastructure.LocalDisk;
+using MyLab.HttpMetrics;
+using MyLab.Log;
 using MyLab.WebErrors;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,11 +18,14 @@ builder.Services.AddControllers(c =>
     c.OutputFormatters.Add(new ByteArrayOutputFormatter());
     c.AddExceptionProcessing();
 });
-builder.Services.AddAvaServiceLogic();
-builder.Services.AddAvaStorageImageSharpInfrastructure();
-builder.Services.AddLocalDiscPictureStorage();
-builder.Services.ConfigureAvaServiceLogic(builder.Configuration, "AvaStorage");
-builder.Services.ConfigureLocalDiscPictureStorage(builder.Configuration, "AvaStorage");
+builder.Services
+    .AddLogging(b => b.AddMyLabConsole())
+    .AddUrlBasedHttpMetrics()
+    .AddAvaServiceLogic()
+    .AddAvaStorageImageSharpInfrastructure()
+    .AddLocalDiscPictureStorage()
+    .ConfigureAvaServiceLogic(builder.Configuration, "AvaStorage")
+    .ConfigureLocalDiscPictureStorage(builder.Configuration, "AvaStorage");
 
 builder.WebHost.ConfigureKestrel((ctx, opt) =>
 {
@@ -31,6 +36,8 @@ builder.WebHost.ConfigureKestrel((ctx, opt) =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseUrlBasedHttpMetrics();
 
 app.UseAuthorization();
 
