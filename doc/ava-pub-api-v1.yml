@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info: 
+  version: "1.0"
+  description: Public AvaStorage WEB API
+  title: AvaStorage Pub
+tags:
+  - name: Avatars
+servers:
+  - url: host.com:5000/v1
+paths:
+  '/ava/{id}':
+    get:
+      tags:
+        - Avatars
+      summary: Get avatar image
+      parameters:
+        - $ref: '#/components/parameters/AvatarId'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/SubjectType'
+      responses:
+        '200':
+          description: An avatar image 
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/AvatarImage'
+        '403':
+          description: Bad request
+        '404':
+          description: Avatar not found
+  
+components:
+  parameters:
+    AvatarId:
+      name: id
+      schema:
+        type: string
+      required: true
+      in: path
+      
+    SubjectType:
+      name: st
+      schema:
+        type: string
+        example: admin
+      required: false
+      in: query
+      
+    Size:
+      name: sz
+      schema:
+        type: integer
+        format: int32
+        example: 64
+      required: false
+      in: query
+   
+  schemas:
+    
+    AvatarImage:
+      description: Avatar image binary
+      type: string
+      format: binary
