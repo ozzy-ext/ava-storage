@@ -58,7 +58,7 @@ namespace AvaStorage.Tests
 
         [Theory]
         [MemberData(nameof(GetInvalidParameters))]
-        public async Task ShouldReturn400WhenPutBadRequest(string id, byte[] picBin)
+        public async Task ShouldNotReturn200WhenPutBadRequest(string id, byte[] picBin)
         {
             //Arrange
 
@@ -78,7 +78,7 @@ namespace AvaStorage.Tests
             var response = await client.PutAsync(id, picBin);
 
             //Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.True((int)response.StatusCode >= 400 && (int)response.StatusCode < 500);
         }
 
         public static object[][] GetInvalidParameters()

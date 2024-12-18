@@ -14,12 +14,12 @@ namespace AvaStorage.Controllers
     public class AdminController(IMediator mediator) : ControllerBase
     {
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Consumes("application/octet-stream")]
         [ErrorToResponse(typeof(ValidationException), HttpStatusCode.BadRequest)]
         public async Task<IActionResult> PutAsync
             (
-                [FromQuery(Name = "id")][Required(AllowEmptyStrings = false)] string id,
+                [FromRoute(Name = "id")][Required(AllowEmptyStrings = false)] string id,
                 [FromBody][Required] byte[] picture,
                 CancellationToken cancellationToken
             )
@@ -29,12 +29,12 @@ namespace AvaStorage.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [ErrorToResponse(typeof(ValidationException), HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAsync
             (
-                [FromQuery(Name = "id")][Required]string id, 
-                [FromQuery(Name = "sz")]int? size, 
+                [FromRoute(Name = "id")][Required]string id, 
+                [FromQuery(Name = "sz"), Range(0, 1024)]int? size, 
                 [FromQuery(Name = "st")]string? subjectType, 
                 CancellationToken cancellationToken
             )

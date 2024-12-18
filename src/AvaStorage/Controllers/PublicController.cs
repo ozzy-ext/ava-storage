@@ -12,12 +12,12 @@ namespace AvaStorage.Controllers
     [Route("v1/ava")]
     public class PublicController(IMediator mediator) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("{id}")]
         [ErrorToResponse(typeof(ValidationException), HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAsync
         (
-            [FromQuery(Name = "id")][Required] string id,
-            [FromQuery(Name = "sz")] int? size,
+            [FromRoute(Name = "id")][Required] string id,
+            [FromQuery(Name = "sz"), Range(0, 1024)] int? size,
             [FromQuery(Name = "st")] string? subjectType,
             CancellationToken cancellationToken
         )

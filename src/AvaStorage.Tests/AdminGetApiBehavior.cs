@@ -59,7 +59,7 @@ namespace AvaStorage.Tests
             var client = CreateClient();
 
             //Act
-            var response = await client.GetAsync("", null, null);
+            var response = await client.GetAsync("foo", -1, null);
 
             //Assert
             Assert.NotNull(response);
