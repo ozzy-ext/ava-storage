@@ -18,10 +18,10 @@ namespace AvaStorage.Application.UseCases.GetAvatar
         IOptions<AvaStorageOptions> options, 
         IPictureRepository pictureRepo,
         IPictureTools pictureTools,
-        ILogger<GetAvatarHandler> logger
+        ILogger<GetAvatarHandler>? logger
     ) : IRequestHandler<GetAvatarCommand, GetAvatarResult>
     {
-        private IDslLogger Logger => logger.Dsl();
+        private IDslLogger? Logger => logger?.Dsl();
 
         public async Task<GetAvatarResult> Handle(GetAvatarCommand request, CancellationToken cancellationToken)
         {
@@ -131,7 +131,7 @@ namespace AvaStorage.Application.UseCases.GetAvatar
                 }
             }
 
-            Logger.Debug("Searching for picture")
+            Logger?.Debug("Searching for picture")
                 .AndFactIs("ava-id", avatarId.ToString())
                 .AndFactIs("sub-type", subjectType?.ToString())
                 .AndFactIs("size", size)
