@@ -8,6 +8,7 @@ using AvaStorage.Middlewares;
 using MyLab.HttpMetrics;
 using MyLab.Log;
 using MyLab.WebErrors;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ app.UseUrlBasedHttpMetrics();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapMetrics();
 
 app.Run();
 
