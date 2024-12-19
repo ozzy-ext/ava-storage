@@ -5,8 +5,11 @@ using AvaStorage.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using AvaStorage.Application.Services;
 using AvaStorage.Domain.PictureAddressing;
+using Microsoft.Extensions.Logging;
+using MyLab.Log.Dsl;
 
 namespace AvaStorage.Application.UseCases.GetAvatar
 {
@@ -14,9 +17,13 @@ namespace AvaStorage.Application.UseCases.GetAvatar
     (
         IOptions<AvaStorageOptions> options, 
         IPictureRepository pictureRepo,
-        IPictureTools pictureTools
+        IPictureTools pictureTools,
+        ILogger<GetAvatarHandler> logger
     ) : IRequestHandler<GetAvatarCommand, GetAvatarResult>
-    {   public async Task<GetAvatarResult> Handle(GetAvatarCommand request, CancellationToken cancellationToken)
+    {
+        private IDslLogger Logger => logger.Dsl();
+
+        public async Task<GetAvatarResult> Handle(GetAvatarCommand request, CancellationToken cancellationToken)
         {
             if (!AvatarId.TryParse(request.Id, out var avatarId))
                 throw new ValidationException("Avatar ID has wrong format");
@@ -60,6 +67,8 @@ namespace AvaStorage.Application.UseCases.GetAvatar
 
         private async Task<AvatarPictureBin?> LoadedPictureAsync(AvatarId avatarId, SubjectType? subjectType, int? size, CancellationToken cancellationToken)
         {
+            var searchLog = new StringBuilder();
+
             AvatarPictureBin? loadedPictureBin = null;
 
             if (size.HasValue)
@@ -69,32 +78,73 @@ namespace AvaStorage.Application.UseCases.GetAvatar
                     new PersonalWithSizePicAddrProvider(avatarId, size.Value), 
                     cancellationToken
                 );
+
+                AppendSearchLog("Person pic with size");
             }
 
-            loadedPictureBin ??= await pictureRepo.LoadPictureAsync
-            (
-                new OriginalPersonalPicAddrProvider(avatarId),
-                cancellationToken
-            );
-
-            if (loadedPictureBin != null) 
-                return loadedPictureBin;
-            
-            if (subjectType != null)
+            if (loadedPictureBin == null)
             {
-                if(size.HasValue)
-                    loadedPictureBin = await pictureRepo.LoadPictureAsync(new DefaultSubjectTypeWithSizeAddPicProvider(subjectType, size.Value), cancellationToken);
-                loadedPictureBin ??= await pictureRepo.LoadPictureAsync(new DefaultSubjectTypePicAddrProvider(subjectType), cancellationToken);
+                loadedPictureBin = await pictureRepo.LoadPictureAsync
+                (
+                    new OriginalPersonalPicAddrProvider(avatarId),
+                    cancellationToken
+                );
+                AppendSearchLog("Person original pic");
             }
 
-            if (loadedPictureBin != null)
-                return loadedPictureBin;
+            if (loadedPictureBin == null)
+            {
+                if (subjectType != null)
+                {
+                    if (size.HasValue)
+                    {
+                        loadedPictureBin = await pictureRepo.LoadPictureAsync(
+                            new DefaultSubjectTypeWithSizeAddPicProvider(subjectType, size.Value), cancellationToken);
+                        AppendSearchLog("Default subject type pic with size");
+                    }
 
-            if (size.HasValue)
-                loadedPictureBin = await pictureRepo.LoadPictureAsync(new DefaultPicWithSizeAddrProvider(size.Value), cancellationToken);
-            loadedPictureBin ??= await pictureRepo.LoadPictureAsync(new DefaultPicAddrProvider(), cancellationToken);
+                    if (loadedPictureBin == null)
+                    {
+                        loadedPictureBin =
+                            await pictureRepo.LoadPictureAsync(new DefaultSubjectTypePicAddrProvider(subjectType),
+                                cancellationToken);
+                        AppendSearchLog("Default subject type pic");
+                    }
+                }
+
+                if (loadedPictureBin == null)
+                {
+                    if (size.HasValue)
+                    {
+                        loadedPictureBin = await pictureRepo.LoadPictureAsync(
+                            new DefaultPicWithSizeAddrProvider(size.Value),
+                            cancellationToken);
+                        AppendSearchLog("Default global pic with size");
+                    }
+
+                    if (loadedPictureBin == null)
+                    {
+                        loadedPictureBin =
+                            await pictureRepo.LoadPictureAsync(new DefaultPicAddrProvider(), cancellationToken);
+                        AppendSearchLog("Default global pic");
+                    }
+                }
+            }
+
+            Logger.Debug("Searching for picture")
+                .AndFactIs("ava-id", avatarId.ToString())
+                .AndFactIs("sub-type", subjectType?.ToString())
+                .AndFactIs("size", size)
+                .AndFactIs("log", searchLog.ToString())
+                .AndFactIs("result", loadedPictureBin != null ? "ok" : "not found")
+                .Write();
 
             return loadedPictureBin;
+
+            void AppendSearchLog(string picName)
+            {
+                searchLog!.AppendLine(picName + " - " + (loadedPictureBin != null ? "ok" : "not found"));
+            }
         }
     }
 }

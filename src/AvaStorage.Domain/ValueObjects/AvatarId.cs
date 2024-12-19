@@ -33,5 +33,10 @@ namespace AvaStorage.Domain.ValueObjects
 
         public static bool Validate(string value)
             => !string.IsNullOrWhiteSpace(value);
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 }
