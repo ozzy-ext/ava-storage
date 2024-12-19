@@ -1,8 +1,12 @@
-﻿namespace AvaStorage.Infrastructure.LocalDisk;
+﻿using MyLab.Log.Dsl;
+
+namespace AvaStorage.Infrastructure.LocalDisk;
 
 class LocalFileOperator : ILocalFileOperator
 {
     private readonly string _basePath;
+
+    public IDslLogger? Logger { get; set; }
 
     public LocalFileOperator(string basePath)
     {
@@ -15,18 +19,36 @@ class LocalFileOperator : ILocalFileOperator
     {
         var filePath = Path.Combine(_basePath, path);
         if (!File.Exists(filePath))
-            return null;
+        {
+            Logger?.Debug("File for reading not found")
+                .AndFactIs("file", filePath)
+                .Write();
 
-        return await File.ReadAllBytesAsync(filePath, cancellationToken);
+            return null;
+        }
+
+        var bin = await File.ReadAllBytesAsync(filePath, cancellationToken);
+
+        Logger?.Debug("File read")
+            .AndFactIs("file", filePath)
+            .AndFactIs("size", bin.Length)
+            .Write();
+
+        return bin;
     }
 
-    public Task WriteFileAsync(string path, byte[] data, CancellationToken cancellationToken)
+    public async Task WriteFileAsync(string path, byte[] data, CancellationToken cancellationToken)
     {
         var filePath = Path.Combine(_basePath, path);
 
         TouchDirectory(filePath);
 
-        return File.WriteAllBytesAsync(filePath, data, cancellationToken);
+        await File.WriteAllBytesAsync(filePath, data, cancellationToken);
+
+        Logger?.Debug("File writ")
+            .AndFactIs("file", filePath)
+            .AndFactIs("size", data.Length)
+            .Write();
     }
 
     private void TouchDirectory(string filePath)

@@ -18,7 +18,7 @@ namespace AvaStorage.Application.UseCases.GetAvatar
         IOptions<AvaStorageOptions> options, 
         IPictureRepository pictureRepo,
         IPictureTools pictureTools,
-        ILogger<GetAvatarHandler>? logger
+        ILogger<GetAvatarHandler>? logger = null
     ) : IRequestHandler<GetAvatarCommand, GetAvatarResult>
     {
         private IDslLogger? Logger => logger?.Dsl();
