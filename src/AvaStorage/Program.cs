@@ -31,8 +31,6 @@ builder.Services
 builder.WebHost.ConfigureKestrel((ctx, opt) =>
 {
     opt.AddServerHeader = false;
-    opt.Listen(IPAddress.Any, ListenConstants.PublicPort);
-    opt.Listen(IPAddress.Any, ListenConstants.AdminPort);
 });
 
 var app = builder.Build();

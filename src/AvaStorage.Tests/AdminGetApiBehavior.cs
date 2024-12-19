@@ -1,15 +1,11 @@
 using System.Net;
 using AvaStorage.Application.UseCases.GetAvatar;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MyLab.ApiClient.Test;
-using MyLab.WebErrors;
-using Xunit.Abstractions;
 
 namespace AvaStorage.Tests
 {
-    public partial class AdminGetApiBehavior : IClassFixture<TestApiFixture<Program, IAdminContractV1>>
+    public partial class AdminGetApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageContractV1>>
     {
         [Fact]
         public async Task ShouldGetPicture()

@@ -9,40 +9,25 @@ using Xunit.Abstractions;
 
 namespace AvaStorage.IntegrationTests
 {
-    public class AvaStorageBehavior : IClassFixture<TestApiFixture<Program, IAdminContractV1>>, IClassFixture<TestApiFixture<Program, IPublicContractV1>>
+    public class AvaStorageBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageContractV1>>
     {
-        private readonly TestApiFixture<Program, IAdminContractV1> _fxtAdmin;
-        private readonly TestApiFixture<Program, IPublicContractV1> _fxtPublic;
+        private readonly TestApiFixture<Program, IAvaStorageContractV1> _fxt;
 
-        public AvaStorageBehavior(TestApiFixture<Program, IAdminContractV1> fxtAdmin, TestApiFixture<Program, IPublicContractV1> fxtPublic, ITestOutputHelper output)
+        public AvaStorageBehavior(TestApiFixture<Program, IAvaStorageContractV1> fxt, ITestOutputHelper output)
         {
             if (Directory.Exists("files"))
                 Directory.Delete("files", true);
 
-            fxtAdmin.Output = output;
-            fxtPublic.Output = output;
-            _fxtAdmin = fxtAdmin;
-            _fxtPublic = fxtPublic;
-            _fxtPublic.ServiceOverrider = srv => srv.Configure<ExceptionProcessingOptions>(o => o.HideError = false);
-            _fxtAdmin.ServiceOverrider = srv => srv.Configure<ExceptionProcessingOptions>(o => o.HideError = false);
+            fxt.Output = output;
+            _fxt = fxt;
+            _fxt.ServiceOverrider = srv => srv.Configure<ExceptionProcessingOptions>(o => o.HideError = false);
         }
 
-        private IAdminContractV1 CreateAdminClient()
+        private IAvaStorageContractV1 CreateClient()
         {
-            var proxyAsset = _fxtAdmin.StartWithProxy
+            var proxyAsset = _fxt.StartWithProxy
             (
-                s => s.ConfigureLocalDiscPictureStorage(o => o.LocalStoragePath = "files"),
-                TestTools.SetAdminPort
-            );
-            return proxyAsset.ApiClient;
-        }
-
-        private IPublicContractV1 CreatePublicClient()
-        {
-            var proxyAsset = _fxtPublic.StartWithProxy
-            (
-                s => s.ConfigureLocalDiscPictureStorage(o => o.LocalStoragePath = "files"),
-                TestTools.SetPublicPort
+                s => s.ConfigureLocalDiscPictureStorage(o => o.LocalStoragePath = "files")
             );
             return proxyAsset.ApiClient;
         }
@@ -51,15 +36,14 @@ namespace AvaStorage.IntegrationTests
         public async Task ShouldProvideAvaPicture()
         {
             //Arrange
-            var adminClient = CreateAdminClient();
-            var publicClient = CreatePublicClient();
+            var client = CreateClient();
 
             var picBin = await File.ReadAllBytesAsync("norm.png");
 
-            var putResponse = await adminClient.PutAsync("foo", picBin);
+            var putResponse = await client.PutAsync("foo", picBin);
 
             //Act
-            var getResponse = await publicClient.GetAsync("foo", 64, "admin");
+            var getResponse = await client.GetAsync("foo", 64, "admin");
 
             var loadedImg = await ParseImageAsync(getResponse.ResponseContent);
 

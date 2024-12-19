@@ -9,11 +9,11 @@ using Xunit.Abstractions;
 
 namespace AvaStorage.Tests
 {
-    public class AdminPutApiBehavior : IClassFixture<TestApiFixture<Program, IAdminContractV1>>
+    public class AdminPutApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageContractV1>>
     {
-        private readonly TestApiFixture<Program, IAdminContractV1> _fxt;
+        private readonly TestApiFixture<Program, IAvaStorageContractV1> _fxt;
 
-        public AdminPutApiBehavior(TestApiFixture<Program, IAdminContractV1> fxt, ITestOutputHelper output)
+        public AdminPutApiBehavior(TestApiFixture<Program, IAvaStorageContractV1> fxt, ITestOutputHelper output)
         {
             fxt.Output = output;
             _fxt = fxt;
@@ -31,8 +31,7 @@ namespace AvaStorage.Tests
                 (
                     s => s
                         .Replace(outHandlerDescriptor)
-                        .AddSingleton(TestTools.DefaultRepoMock.Object),
-                    TestTools.SetAdminPort);
+                        .AddSingleton(TestTools.DefaultRepoMock.Object));
             var client = proxyAsset.ApiClient;
 
             //Act
@@ -64,14 +63,8 @@ namespace AvaStorage.Tests
 
             var proxyAsset = _fxt.StartWithProxy
                 (
-                    s => s.AddSingleton(TestTools.DefaultRepoMock.Object),
-                    c =>
-                    {
-                        c.BaseAddress = new UriBuilder(c.BaseAddress!)
-                        {
-                            Port = ListenConstants.AdminPort
-                        }.Uri;
-                    });
+                    s => s.AddSingleton(TestTools.DefaultRepoMock.Object)
+                );
             var client = proxyAsset.ApiClient;
 
             //Act

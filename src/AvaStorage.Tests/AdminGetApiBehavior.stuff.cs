@@ -10,9 +10,9 @@ namespace AvaStorage.Tests;
 
 public partial class AdminGetApiBehavior
 {
-    private readonly TestApiFixture<Program, IAdminContractV1> _fxt;
+    private readonly TestApiFixture<Program, IAvaStorageContractV1> _fxt;
 
-    public AdminGetApiBehavior(TestApiFixture<Program, IAdminContractV1> fxt, ITestOutputHelper output)
+    public AdminGetApiBehavior(TestApiFixture<Program, IAvaStorageContractV1> fxt, ITestOutputHelper output)
     {
         fxt.Output = output;
         _fxt = fxt;
@@ -36,10 +36,9 @@ public partial class AdminGetApiBehavior
         _getHandlerMock.VerifyNoOtherCalls();
     }
 
-    private IAdminContractV1 CreateClient()
+    private IAvaStorageContractV1 CreateClient()
     {
-        var proxyAsset = _fxt.StartWithProxy(TestTools.AddGetMocks(TestTools.DefaultRepoMock, _getHandlerMock),
-            TestTools.SetAdminPort);
+        var proxyAsset = _fxt.StartWithProxy(TestTools.AddGetMocks(TestTools.DefaultRepoMock, _getHandlerMock));
         return proxyAsset.ApiClient;
     }
 }

@@ -1,14 +1,30 @@
 openapi: 3.0.0
 info: 
   version: "1.0"
-  description: Public AvaStorage WEB API
-  title: AvaStorage Pub
+  title: AvaStorage API
 tags:
   - name: Avatars
 servers:
-  - url: host.com:5000/v1
+  - url: host.com:5001/v1
 paths:
   '/ava/{id}':
+    put:
+      tags:
+        - Avatars
+      summary: Create or replace avatar image
+      parameters:
+        - $ref: '#/components/parameters/AvatarId'
+      requestBody:
+        content:
+          'application/octet-stream':
+            schema:
+              $ref: '#/components/schemas/AvatarImage'
+      responses:
+        '200':
+          description: Successfull
+        '400':
+          description: Bad request
+        
     get:
       tags:
         - Avatars

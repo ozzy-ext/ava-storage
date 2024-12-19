@@ -3,7 +3,7 @@
 namespace AvaStorage.Tests
 {
     [Api("v1/ava/{id}")]
-    public interface IAdminContractV1
+    public interface IAvaStorageContractV1
     {
         [Put]
         Task<CallDetails> PutAsync
