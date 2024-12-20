@@ -3,7 +3,35 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage", "AvaStorage\AvaStorage.csproj", "{CAB7868B-686A-4026-95DD-B703A5EB7F87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage", "AvaStorage\AvaStorage.csproj", "{CAB7868B-686A-4026-95DD-B703A5EB7F87}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Application", "AvaStorage.Application\AvaStorage.Application.csproj", "{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Domain", "AvaStorage.Domain\AvaStorage.Domain.csproj", "{10DA1785-2171-4803-98E2-3B043B624F77}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Domain.Tests", "AvaStorage.Domain.Tests\AvaStorage.Domain.Tests.csproj", "{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Tests", "AvaStorage.Tests\AvaStorage.Tests.csproj", "{0C4E1919-1E24-426E-9075-7E27F1C0266C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Application.Tests", "AvaStorage.Application.Tests\AvaStorage.Application.Tests.csproj", "{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EE65A3B9-2586-4AA2-8466-776AC52F4FE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{081D1E61-C0E4-45B2-9BAE-6390389183BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Infrastructure.ImageSharp", "AvaStorage.Infrastructure.ImageSharp\AvaStorage.Infrastructure.ImageSharp.csproj", "{7139E6BE-56C3-4C15-8BF0-229B7059EC46}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Infrastructure.LocalDisk", "AvaStorage.Infrastructure.LocalDisk\AvaStorage.Infrastructure.LocalDisk.csproj", "{00309EA6-6BCE-41A6-AF82-8ABE90402C25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Infrastructure.ImageSharp.Tests", "AvaStorage.Infrastructure.ImageSharp.Tests\AvaStorage.Infrastructure.ImageSharp.Tests.csproj", "{F97EC702-9AB5-4902-87F3-D01C66CBD933}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.Infrastructure.LocalDisk.Tests", "AvaStorage.Infrastructure.LocalDisk.Tests\AvaStorage.Infrastructure.LocalDisk.Tests.csproj", "{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaStorage.IntegrationTests", "AvaStorage.IntegrationTests\AvaStorage.IntegrationTests.csproj", "{51020509-59D2-43A4-8D36-134FF60E0331}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaStorage.Client", "AvaStorage.Client\AvaStorage.Client.csproj", "{CA106C81-E9CC-473B-9B05-76D01FFB02C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +43,65 @@ Global
 		{CAB7868B-686A-4026-95DD-B703A5EB7F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAB7868B-686A-4026-95DD-B703A5EB7F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAB7868B-686A-4026-95DD-B703A5EB7F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10DA1785-2171-4803-98E2-3B043B624F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10DA1785-2171-4803-98E2-3B043B624F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10DA1785-2171-4803-98E2-3B043B624F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10DA1785-2171-4803-98E2-3B043B624F77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7139E6BE-56C3-4C15-8BF0-229B7059EC46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7139E6BE-56C3-4C15-8BF0-229B7059EC46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7139E6BE-56C3-4C15-8BF0-229B7059EC46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7139E6BE-56C3-4C15-8BF0-229B7059EC46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00309EA6-6BCE-41A6-AF82-8ABE90402C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00309EA6-6BCE-41A6-AF82-8ABE90402C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00309EA6-6BCE-41A6-AF82-8ABE90402C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00309EA6-6BCE-41A6-AF82-8ABE90402C25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F97EC702-9AB5-4902-87F3-D01C66CBD933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F97EC702-9AB5-4902-87F3-D01C66CBD933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F97EC702-9AB5-4902-87F3-D01C66CBD933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F97EC702-9AB5-4902-87F3-D01C66CBD933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51020509-59D2-43A4-8D36-134FF60E0331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51020509-59D2-43A4-8D36-134FF60E0331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51020509-59D2-43A4-8D36-134FF60E0331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51020509-59D2-43A4-8D36-134FF60E0331}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA106C81-E9CC-473B-9B05-76D01FFB02C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA106C81-E9CC-473B-9B05-76D01FFB02C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA106C81-E9CC-473B-9B05-76D01FFB02C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA106C81-E9CC-473B-9B05-76D01FFB02C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8D82F8E-0777-4E2B-8757-4FCBA84B1789} = {EE65A3B9-2586-4AA2-8466-776AC52F4FE5}
+		{10DA1785-2171-4803-98E2-3B043B624F77} = {EE65A3B9-2586-4AA2-8466-776AC52F4FE5}
+		{ED71F1BC-E9E8-444E-9BEB-0A52D6F2D4A9} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
+		{0C4E1919-1E24-426E-9075-7E27F1C0266C} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
+		{5086A707-7A1F-4D64-AAF3-6C7F37C7EAD1} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
+		{7139E6BE-56C3-4C15-8BF0-229B7059EC46} = {059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}
+		{00309EA6-6BCE-41A6-AF82-8ABE90402C25} = {059EC9E9-E8AA-49D9-A817-4FFE6FAAF10B}
+		{F97EC702-9AB5-4902-87F3-D01C66CBD933} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
+		{A6DA4FE9-CC1E-44D8-8483-5E0BCFF5B461} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
+		{51020509-59D2-43A4-8D36-134FF60E0331} = {081D1E61-C0E4-45B2-9BAE-6390389183BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81603E0C-F8F6-4075-A55A-284D944721FF}

@@ -1,0 +1,1 @@
+docker build -f ./Dockerfile -t ghcr.io/mylab-tools/ava-storge:local ../src
