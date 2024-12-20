@@ -4,16 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 using MyLab.ApiClient.Test;
 using MyLab.WebErrors;
 using System.Net;
+using MyLab.AvaStorage;
 using SixLabors.ImageSharp;
 using Xunit.Abstractions;
 
 namespace AvaStorage.IntegrationTests
 {
-    public class AvaStorageBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageContractV1>>
+    public class AvaStorageBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageV1>>
     {
-        private readonly TestApiFixture<Program, IAvaStorageContractV1> _fxt;
+        private readonly TestApiFixture<Program, IAvaStorageV1> _fxt;
 
-        public AvaStorageBehavior(TestApiFixture<Program, IAvaStorageContractV1> fxt, ITestOutputHelper output)
+        public AvaStorageBehavior(TestApiFixture<Program, IAvaStorageV1> fxt, ITestOutputHelper output)
         {
             if (Directory.Exists("files"))
                 Directory.Delete("files", true);
@@ -23,7 +24,7 @@ namespace AvaStorage.IntegrationTests
             _fxt.ServiceOverrider = srv => srv.Configure<ExceptionProcessingOptions>(o => o.HideError = false);
         }
 
-        private IAvaStorageContractV1 CreateClient()
+        private IAvaStorageV1 CreateClient()
         {
             var proxyAsset = _fxt.StartWithProxy
             (
