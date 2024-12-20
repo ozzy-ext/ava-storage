@@ -2,10 +2,11 @@ using System.Net;
 using AvaStorage.Application.UseCases.GetAvatar;
 using Moq;
 using MyLab.ApiClient.Test;
+using MyLab.AvaStorage;
 
 namespace AvaStorage.Tests
 {
-    public partial class AdminGetApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageContractV1>>
+    public partial class AdminGetApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageV1>>
     {
         [Fact]
         public async Task ShouldGetPicture()

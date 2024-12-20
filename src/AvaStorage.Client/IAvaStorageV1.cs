@@ -1,9 +1,10 @@
-﻿using MyLab.ApiClient;
+﻿using System.Threading.Tasks;
+using MyLab.ApiClient;
 
-namespace AvaStorage.Tests
+namespace MyLab.AvaStorage
 {
     [Api("v1/ava/{id}")]
-    public interface IAvaStorageContractV1
+    public interface IAvaStorageV1
     {
         [Put]
         Task<CallDetails> PutAsync

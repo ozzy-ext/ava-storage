@@ -5,15 +5,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using MyLab.ApiClient.Test;
+using MyLab.AvaStorage;
 using Xunit.Abstractions;
 
 namespace AvaStorage.Tests
 {
-    public class AdminPutApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageContractV1>>
+    public class AdminPutApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageV1>>
     {
-        private readonly TestApiFixture<Program, IAvaStorageContractV1> _fxt;
+        private readonly TestApiFixture<Program, IAvaStorageV1> _fxt;
 
-        public AdminPutApiBehavior(TestApiFixture<Program, IAvaStorageContractV1> fxt, ITestOutputHelper output)
+        public AdminPutApiBehavior(TestApiFixture<Program, IAvaStorageV1> fxt, ITestOutputHelper output)
         {
             fxt.Output = output;
             _fxt = fxt;
