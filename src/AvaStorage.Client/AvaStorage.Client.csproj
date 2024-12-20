@@ -13,10 +13,11 @@
     <Authors>Andrey Osintsev</Authors>
     <Company>Andrey Osintsev</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>1.0.0.2012</AssemblyVersion>
-    <FileVersion>1.0.0.2012</FileVersion>
+    <AssemblyVersion>1.0.1.2012</AssemblyVersion>
+    <FileVersion>1.0.1.2012</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

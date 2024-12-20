@@ -3,7 +3,7 @@ using MyLab.ApiClient;
 
 namespace MyLab.AvaStorage
 {
-    [Api("v1/ava/{id}")]
+    [Api("v1/ava/{id}", Key = "ava-storage")]
     public interface IAvaStorageV1
     {
         [Put]
