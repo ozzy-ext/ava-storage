@@ -1,5 +1,6 @@
 ﻿using AvaStorage.Application.Services;
 using AvaStorage.Application.UseCases.GetAvatar;
+using AvaStorage.Domain;
 using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.ValueObjects;
 using Moq;
@@ -160,8 +161,7 @@ namespace AvaStorage.Application.Tests
         public async Task ShouldNormalizePicture()
         {
             //Arrange
-            var originPic = new AvatarPicture(_testAva64, new PictureSize(128, 64));
-            var modifiedPic = new AvatarPicture(new AvatarPictureBin(new byte[]{3, 2, 1}), new PictureSize(64, 64));
+            var modifiedPic = new LocalAvatarFile("foo", "bar");
 
             var expectedPicAddr = new DefaultPicAddrProvider().ProvideAddress();
 
@@ -172,20 +172,12 @@ namespace AvaStorage.Application.Tests
                 ))
                 .ReturnsAsync(_testAva64);
 
-            var picToolsMock = new Mock<IPictureTools>();
+            var imgModifierMock = new Mock<IImageModifier>();
 
-            picToolsMock
-                .Setup(t => t.DeserializeAsync
-                (
-                    It.IsAny<AvatarPictureBin>(),
-                    It.IsAny<CancellationToken>()
-                ))
-                .ReturnsAsync(originPic);
-
-            picToolsMock
+            imgModifierMock
                 .Setup(t => t.FitIntoSizeAsync
                     (
-                        It.IsAny<AvatarPicture>(), 
+                        It.IsAny<IAvatarFile>(), 
                         It.IsAny<int>(), 
                         It.IsAny<CancellationToken>()
                     ))
@@ -193,15 +185,15 @@ namespace AvaStorage.Application.Tests
 
             var getCmd = new GetAvatarCommand("foo", 64, "bar");
 
-            var handler = new GetAvatarHandler(DefaultOptions, _picRepoMock.Object, picToolsMock.Object);
+            var handler = new GetAvatarHandler(DefaultOptions, _picRepoMock.Object, imgModifierMock.Object);
 
             //Act
             var result = await handler.Handle(getCmd, CancellationToken.None);
 
             //Assert
             Assert.NotNull(result);
-            Assert.NotNull(result.AvatarPicture);
-            Assert.Equal(modifiedPic.Binary.Binary, result.AvatarPicture);
+            Assert.NotNull(result.AvatarFile);
+            Assert.Equal(modifiedPic, result.AvatarFile);
         }
     }
 }

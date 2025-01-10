@@ -40,10 +40,9 @@ namespace AvaStorage.Controllers
         {
             var result = await mediator.Send(new GetAvatarCommand(id, size, subjectType), cancellationToken);
 
-            if (result?.AvatarPicture == null) return NotFound();
+            if (result.AvatarFile == null) return NotFound();
 
-            var mem = new MemoryStream(result.AvatarPicture);
-            return base.File(mem, "application/octet-stream");
+            return base.File(result.AvatarFile.OpenRead(), "application/octet-stream");
         }
     }
 }

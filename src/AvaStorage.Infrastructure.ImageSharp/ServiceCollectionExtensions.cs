@@ -8,7 +8,8 @@ namespace AvaStorage.Infrastructure.ImageSharp
     {
         public static IServiceCollection AddAvaStorageImageSharpInfrastructure(this IServiceCollection srv)
         {
-            return srv.AddSingleton<IPictureTools, ImageSharpPictureTools>();
+            return srv.AddSingleton<IImageMetadataExtractor, ImageSharpImageMetadataExtractor>()
+                .AddSingleton<IImageModifier, ImageSharpImageModifier>();
         }
     }
 }

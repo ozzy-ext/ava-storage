@@ -3,7 +3,7 @@ using AvaStorage.Domain.ValueObjects;
 
 namespace AvaStorage.Domain.Tests
 {
-    public class PictureValidatorBehavior
+    public class ImageValidatorBehavior
     {
         [Theory]
         [InlineData(1200, 1200, false)]
@@ -11,16 +11,12 @@ namespace AvaStorage.Domain.Tests
         public async Task ShouldValidateSize(int imgWidth, int imgHeight, bool expectedValidation)
         {
             //Arrange
-            var validator = new PictureValidator(512);
-            var avaPicture = new AvatarPicture
-            (
-                new AvatarPictureBin(new byte[] { 1, 2, 3 }),
-                new PictureSize(imgWidth, imgHeight)
-            );
+            var validator = new ImageValidator(512);
+            var avaPictureMetadata = new ImageMetadata(imgWidth, imgWidth, "foo");
 
 
             //Act
-            bool validationResult = validator.IsValid(avaPicture!);
+            bool validationResult = validator.IsValid(avaPictureMetadata!);
 
             //Assert
             Assert.Equal(expectedValidation, validationResult);

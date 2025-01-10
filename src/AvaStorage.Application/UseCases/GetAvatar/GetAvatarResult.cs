@@ -1,5 +1,5 @@
-﻿using AvaStorage.Domain.ValueObjects;
+﻿using AvaStorage.Domain;
 
 namespace AvaStorage.Application.UseCases.GetAvatar;
 
-public record GetAvatarResult(byte[]? AvatarPicture);
+public record GetAvatarResult(IAvatarFile? AvatarFile);
