@@ -16,7 +16,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var expectedPicAddr = new OriginalPersonalPicAddrProvider("foo").ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadPictureAsync(
+                .Setup(r => r.GetPictureAsync(
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr), 
                     It.IsAny<CancellationToken>()
                 ))
@@ -37,7 +37,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var expectedPicAddr = new OriginalPersonalPicAddrProvider("foo").ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadPictureAsync(
+                .Setup(r => r.GetPictureAsync(
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
                     It.IsAny<CancellationToken>()
                 ))
@@ -58,7 +58,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var expectedPicAddr = new PersonalWithSizePicAddrProvider("foo", 64).ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadPictureAsync(
+                .Setup(r => r.GetPictureAsync(
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
                     It.IsAny<CancellationToken>()
                 ))
@@ -79,7 +79,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var expectedPicAddr = new DefaultSubjectTypeWithSizeAddPicProvider("bar", 64).ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadPictureAsync(
+                .Setup(r => r.GetPictureAsync(
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
                     It.IsAny<CancellationToken>()
                 ))
@@ -100,7 +100,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var expectedPicAddr = new DefaultSubjectTypePicAddrProvider("bar").ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadPictureAsync(
+                .Setup(r => r.GetPictureAsync(
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
                     It.IsAny<CancellationToken>()
                 ))
@@ -121,7 +121,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var expectedPicAddr = new DefaultPicWithSizeAddrProvider(64).ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadPictureAsync(
+                .Setup(r => r.GetPictureAsync(
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
                     It.IsAny<CancellationToken>()
                 ))
@@ -142,7 +142,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var expectedPicAddr = new DefaultPicAddrProvider().ProvideAddress();
             _picRepoMock
-                .Setup(r => r.LoadPictureAsync(
+                .Setup(r => r.GetPictureAsync(
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
                     It.IsAny<CancellationToken>()
                 ))
@@ -168,7 +168,7 @@ namespace AvaStorage.Application.Tests
             var expectedPicAddr = new DefaultPicAddrProvider().ProvideAddress();
 
             _picRepoMock
-                .Setup(r => r.LoadPictureAsync(
+                .Setup(r => r.GetPictureAsync(
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
                     It.IsAny<CancellationToken>()
                 ))
