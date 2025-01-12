@@ -4,6 +4,7 @@ using AvaStorage.Application.UseCases.GetAvatar;
 using AvaStorage.Application.UseCases.PutAvatar;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using MyLab.WebErrors;
 
 namespace AvaStorage.Controllers
@@ -42,7 +43,7 @@ namespace AvaStorage.Controllers
 
             if (result.AvatarFile == null) return NotFound();
 
-            return base.File(result.AvatarFile.OpenRead(), "application/octet-stream");
+            return base.File(result.AvatarFile.OpenRead(), "application/octet-stream", result.AvatarFile.LastModified, EntityTagHeaderValue.Any);
         }
     }
 }

@@ -1,25 +1,40 @@
 ﻿using AutoFixture;
+using AvaStorage.Domain;
+using AvaStorage.Domain.PictureAddressing;
+using Microsoft.Extensions.Options;
+using Moq;
 
 namespace AvaStorage.Infrastructure.LocalDisk.Tests
 {
-    public class LocalFileOperatorBehavior : IDisposable
+    public class LocalDiscPictureRepositoryBehavior : IDisposable
     {
         private readonly string _basePath = Path.Combine("files", Guid.NewGuid().ToString());
 
         [Fact]
-        public async Task ShouldCreateDirectoryIfNotExists()
+        public async Task ShouldCreateDirectoryIfDoesNotExists()
         {
             //Arrange
-            var fileProvider = new LocalFileOperator(_basePath);
+            var options = new LocalDiskOptions
+            {
+                LocalStoragePath = _basePath
+            };
+            var repo = new LocalDiscPictureRepository(new OptionsWrapper<LocalDiskOptions>(options));
+            
             var picBin = new Fixture().Create<byte[]>();
+            var avaFile = new MemoryAvatarFile(picBin);
+
             var fileName = Guid.NewGuid().ToString();
             var expectedFilePath = Path.Combine(_basePath, fileName);
 
+            var addrProviderMock = new Mock<IPictureAddressProvider>();
+            addrProviderMock.Setup(p => p.ProvideAddress())
+                .Returns(() => fileName);
+
             //Act
-            await fileProvider.WriteFileAsync
+            await repo.SavePictureAsync
             (
-                fileName,
-                picBin,
+                addrProviderMock.Object,
+                avaFile,
                 CancellationToken.None
             );
 

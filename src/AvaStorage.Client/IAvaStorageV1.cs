@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MyLab.ApiClient;
 
 namespace MyLab.AvaStorage
@@ -19,6 +20,15 @@ namespace MyLab.AvaStorage
             [Path("id")] string id,
             [Query("sz")] int? size,
             [Query("st")] string? subjectType
+        );
+
+        [Get]
+        Task<CallDetails<byte[]>> GetWithLastModifiedAsync
+        (
+            [Path("id")] string id,
+            [Query("sz")] int? size,
+            [Query("st")] string? subjectType,
+            [Header("If-Modified-Since")] string ifLastModifiedSince
         );
     }
 }

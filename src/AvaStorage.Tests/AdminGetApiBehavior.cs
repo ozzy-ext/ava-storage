@@ -70,5 +70,31 @@ namespace AvaStorage.Tests
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+        [Fact]
+        public async Task ShouldReturn304IfNotModified()
+        {
+            //Arrange
+            var avaFile = new MemoryAvatarFile(TestTools.PictureBin)
+            {
+                LastModified = DateTimeOffset.Now.AddHours(-1)
+            };
+
+            _getHandlerMock
+                .Setup(
+                    h => h.Handle
+                    (
+                        It.IsAny<GetAvatarCommand>(),
+                        It.IsAny<CancellationToken>()
+                    ))
+                .ReturnsAsync(new GetAvatarResult(avaFile));
+
+            var client = CreateClient();
+
+            //Act
+            var response = await client.GetWithLastModifiedAsync("foo", 64, "admin", DateTimeOffset.Now.ToString("R"));
+
+            //Assert
+            Assert.Equal(HttpStatusCode.NotModified, response.StatusCode);
+        }
     }
 }

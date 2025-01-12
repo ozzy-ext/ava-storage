@@ -3,6 +3,7 @@
     public interface IAvatarFile
     {
         public string? Name { get; }
+        public DateTimeOffset? LastModified { get; }
         Stream OpenRead();
     }
 
@@ -10,6 +11,7 @@
     {
         private readonly byte[] _binary;
         public string? Name { get; }
+        public DateTimeOffset? LastModified { get; init; }
 
         public MemoryAvatarFile(byte[] binary, string? name = null)
         {

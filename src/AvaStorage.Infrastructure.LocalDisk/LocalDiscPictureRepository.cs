@@ -1,52 +1,47 @@
-﻿using System.Security.AccessControl;
-using AvaStorage.Domain;
+﻿using AvaStorage.Domain;
 using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
-using AvaStorage.Domain.ValueObjects;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MyLab.Log.Dsl;
 
 namespace AvaStorage.Infrastructure.LocalDisk
 {
-    class LocalDiscPictureRepository : IPictureRepository
+    class LocalDiscPictureRepository(IOptions<LocalDiskOptions> options) : IPictureRepository
     {
-        private readonly ILocalFileOperator _fileOperator;
-        public LocalDiscPictureRepository(ILocalFileOperator fileOperator, ILogger<LocalDiscPictureRepository>? logger = null)
+        public async Task SavePictureAsync(IPictureAddressProvider addressProvider, IAvatarFile file, CancellationToken cancellationToken)
         {
-            _fileOperator = fileOperator;
-        }
+            var fileRelAddr = addressProvider.ProvideAddress();
+            var fileAbsAddr = ToAbsolutePath(fileRelAddr);
 
-        public LocalDiscPictureRepository(IOptions<LocalDiskOptions> options, ILogger<LocalDiscPictureRepository>? logger = null)
-            :this(new LocalFileOperator(options.Value.LocalStoragePath){ Logger = logger.Dsl() }, logger)
-        {
+            TouchDirectory(fileAbsAddr);
 
-        }
+            await using var avaStream = file.OpenRead();
+            await using var destFileStream = File.OpenWrite(fileAbsAddr);
 
-        public Task SavePictureAsync(IPictureAddressProvider addressProvider, IAvatarFile file, CancellationToken cancellationToken)
-        {
-            var fileAddr = addressProvider.ProvideAddress();
-
-            using var stream = file.OpenRead();
-
-            return _fileOperator.WriteFileAsync
-            (
-                fileAddr,
-                stream, 
-                cancellationToken
-            );
+            await avaStream.CopyToAsync(destFileStream, cancellationToken);
         }
 
         public Task<IAvatarFile?> GetPictureAsync(IPictureAddressProvider addressProvider, CancellationToken cancellationToken)
         {
-            var filePath = addressProvider.ProvideAddress();
+            var fileRelAddr = addressProvider.ProvideAddress();
+            var fileAbsAddr = ToAbsolutePath(fileRelAddr);
 
-            if (!_fileOperator.IsExist(filePath))
-                return Task.FromResult((IAvatarFile?)null);
+            LocalAvatarFile.TryFromFile(fileAbsAddr, out var existFile);
 
-            var filename = Path.GetFileName(filePath);
-            
-            return Task.FromResult((IAvatarFile?)new LocalAvatarFile(filename, filePath, _fileOperator));
+            return Task.FromResult((IAvatarFile?)existFile);
+        }
+        private string ToAbsolutePath(string fileRelAddr) => Path.Combine(options.Value.LocalStoragePath, fileRelAddr);
+
+        private void TouchDirectory(string filePath)
+        {
+            var dirName = Path.GetDirectoryName(filePath);
+
+            if (dirName == null)
+                throw new InvalidOperationException("Storage directory name not found");
+
+            var dir = new DirectoryInfo(dirName);
+            if (!dir.Exists)
+                dir.Create();
+
         }
     }
 }

@@ -4,21 +4,36 @@ namespace AvaStorage.Infrastructure.LocalDisk
 {
     public class LocalAvatarFile : IAvatarFile
     {
-        private readonly string _path;
-        private readonly ILocalFileOperator _fileOperator;
+        public string Name { get; }
 
-        public string? Name { get; }
+        public string FullPath { get; }
 
-        public LocalAvatarFile(string name, string path, ILocalFileOperator fileOperator)
+        public DateTimeOffset? LastModified { get; }
+
+        public static bool TryFromFile(string fullPath, out LocalAvatarFile? file)
         {
-            _path = path;
-            _fileOperator = fileOperator;
-            Name = name;
+            if (!File.Exists(fullPath))
+            {
+                file = null;
+                return false;
+            }
+
+            file = new LocalAvatarFile(fullPath);
+            return true;
         }
+
+        private LocalAvatarFile(string fullPath)
+        {
+            Name = Path.GetFileName(fullPath);
+            FullPath = fullPath;
+            LastModified = File.GetLastWriteTimeUtc(fullPath);
+        }
+
+        
 
         public Stream OpenRead()
         {
-            return _fileOperator.OpenRead(_path);
+            return File.OpenRead(FullPath);
         }
     }
 }
