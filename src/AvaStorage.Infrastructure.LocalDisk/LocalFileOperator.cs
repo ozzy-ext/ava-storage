@@ -1,5 +1,4 @@
 ﻿using MyLab.Log.Dsl;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AvaStorage.Infrastructure.LocalDisk;
 
@@ -16,26 +15,16 @@ class LocalFileOperator : ILocalFileOperator
         _basePath = basePath;
     }
 
-    public async Task<byte[]?> ReadFileAsync(string path, CancellationToken cancellationToken)
+    public Stream OpenRead(string path)
     {
         var filePath = Path.Combine(_basePath, path);
-        if (!File.Exists(filePath))
-        {
-            Logger?.Debug("File for reading not found")
-                .AndFactIs("file", filePath)
-                .Write();
 
-            return null;
-        }
+        return File.OpenRead(filePath);
+    }
 
-        var bin = await File.ReadAllBytesAsync(filePath, cancellationToken);
-
-        Logger?.Debug("File read")
-            .AndFactIs("file", filePath)
-            .AndFactIs("size", bin.Length)
-            .Write();
-
-        return bin;
+    public bool IsExist(string path)
+    {
+        return File.Exists(Path.Combine(_basePath, path));
     }
 
     public async Task WriteFileAsync(string path, byte[] data, CancellationToken cancellationToken)
@@ -55,7 +44,7 @@ class LocalFileOperator : ILocalFileOperator
 
         TouchDirectory(filePath);
 
-        var outputStream = File.OpenWrite(filePath);
+        await using var outputStream = File.OpenWrite(filePath);
         await readStream.CopyToAsync(outputStream, cancellationToken);
 
         WriteLogAboutWrittenFile(filePath, outputStream.Length);

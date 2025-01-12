@@ -19,7 +19,7 @@ namespace AvaStorage.Infrastructure.ImageSharp.Tests
             await image.SaveAsBmpAsync(mem);
 
             mem.Seek(0, SeekOrigin.Begin);
-            var picBin = await TestTools.ReadBinFromStreamAsync(mem, CancellationToken.None);
+            var picBin = await TestTools.ReadBinFromStreamAsync(mem);
             var originPic = new MemoryAvatarFile(picBin);
 
             var imgResizer = new ImageSharpImageModifier();
@@ -39,6 +39,7 @@ namespace AvaStorage.Infrastructure.ImageSharp.Tests
             var readStream = resultPic.OpenRead();
             var resultMem = new MemoryStream();
             await readStream.CopyToAsync(resultMem);
+            resultMem.Seek(0, SeekOrigin.Begin);
 
             var resultImage = await Image.IdentifyAsync(resultMem);
             return resultImage;

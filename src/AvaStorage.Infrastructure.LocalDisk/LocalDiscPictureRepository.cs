@@ -41,12 +41,12 @@ namespace AvaStorage.Infrastructure.LocalDisk
         {
             var filePath = addressProvider.ProvideAddress();
 
-            if (!File.Exists(filePath))
+            if (!_fileOperator.IsExist(filePath))
                 return Task.FromResult((IAvatarFile?)null);
 
             var filename = Path.GetFileName(filePath);
             
-            return Task.FromResult((IAvatarFile?)new LocalAvatarFile(filename, filePath));
+            return Task.FromResult((IAvatarFile?)new LocalAvatarFile(filename, filePath, _fileOperator));
         }
     }
 }

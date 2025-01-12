@@ -161,7 +161,9 @@ namespace AvaStorage.Application.Tests
         public async Task ShouldNormalizePicture()
         {
             //Arrange
-            var modifiedPic = new LocalAvatarFile("foo", "bar");
+            var avaFileMock = new Mock<IAvatarFile>();
+
+            var modifiedPic = avaFileMock.Object;
 
             var expectedPicAddr = new DefaultPicAddrProvider().ProvideAddress();
 

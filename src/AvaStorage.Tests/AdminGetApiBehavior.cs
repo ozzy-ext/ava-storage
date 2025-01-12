@@ -38,7 +38,14 @@ namespace AvaStorage.Tests
         public async Task ShouldReturn404IfNotFound()
         {
             //Arrange
-            // _getHandlerMock returns null by default
+            _getHandlerMock
+             .Setup(
+                 h => h.Handle
+                 (
+                     It.IsAny<GetAvatarCommand>(),
+                     It.IsAny<CancellationToken>()
+                 ))
+             .ReturnsAsync(new GetAvatarResult(null));
 
             var client = CreateClient();
 
