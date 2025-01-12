@@ -20,7 +20,7 @@ class SearchPictureLogic(IPictureRepository pictureRepo)
 
         if (size.HasValue)
         {
-            loadedPictureBin = await pictureRepo.LoadPictureAsync
+            loadedPictureBin = await pictureRepo.GetPictureAsync
             (
                 new PersonalWithSizePicAddrProvider(avatarId, size.Value),
                 cancellationToken
@@ -32,7 +32,7 @@ class SearchPictureLogic(IPictureRepository pictureRepo)
 
         if (loadedPictureBin == null)
         {
-            loadedPictureBin = await pictureRepo.LoadPictureAsync
+            loadedPictureBin = await pictureRepo.GetPictureAsync
             (
                 new OriginalPersonalPicAddrProvider(avatarId),
                 cancellationToken
@@ -46,7 +46,7 @@ class SearchPictureLogic(IPictureRepository pictureRepo)
             {
                 if (size.HasValue)
                 {
-                    loadedPictureBin = await pictureRepo.LoadPictureAsync(
+                    loadedPictureBin = await pictureRepo.GetPictureAsync(
                         new DefaultSubjectTypeWithSizeAddPicProvider(subjectType, size.Value), cancellationToken);
                     bySize = loadedPictureBin != null;
                     AppendSearchLog("Default subject type pic with size");
@@ -55,7 +55,7 @@ class SearchPictureLogic(IPictureRepository pictureRepo)
                 if (loadedPictureBin == null)
                 {
                     loadedPictureBin =
-                        await pictureRepo.LoadPictureAsync(new DefaultSubjectTypePicAddrProvider(subjectType),
+                        await pictureRepo.GetPictureAsync(new DefaultSubjectTypePicAddrProvider(subjectType),
                             cancellationToken);
                     AppendSearchLog("Default subject type pic");
                 }
@@ -65,7 +65,7 @@ class SearchPictureLogic(IPictureRepository pictureRepo)
             {
                 if (size.HasValue)
                 {
-                    loadedPictureBin = await pictureRepo.LoadPictureAsync(
+                    loadedPictureBin = await pictureRepo.GetPictureAsync(
                         new DefaultPicWithSizeAddrProvider(size.Value),
                         cancellationToken);
                     bySize = loadedPictureBin != null;
@@ -75,7 +75,7 @@ class SearchPictureLogic(IPictureRepository pictureRepo)
                 if (loadedPictureBin == null)
                 {
                     loadedPictureBin =
-                        await pictureRepo.LoadPictureAsync(new DefaultPicAddrProvider(), cancellationToken);
+                        await pictureRepo.GetPictureAsync(new DefaultPicAddrProvider(), cancellationToken);
                     AppendSearchLog("Default global pic");
                 }
             }

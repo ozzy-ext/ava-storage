@@ -6,6 +6,6 @@ namespace AvaStorage.Domain.Repositories
     public interface IPictureRepository
     {
         Task SavePictureAsync(IPictureAddressProvider addressProvider, IAvatarFile file, CancellationToken cancellationToken);
-        Task<IAvatarFile?> LoadPictureAsync(IPictureAddressProvider addressProvider, CancellationToken cancellationToken);
+        Task<IAvatarFile?> GetPictureAsync(IPictureAddressProvider addressProvider, CancellationToken cancellationToken);
     }
 }

@@ -37,7 +37,7 @@ namespace AvaStorage.Infrastructure.LocalDisk
             );
         }
 
-        public Task<IAvatarFile?> LoadPictureAsync(IPictureAddressProvider addressProvider, CancellationToken cancellationToken)
+        public Task<IAvatarFile?> GetPictureAsync(IPictureAddressProvider addressProvider, CancellationToken cancellationToken)
         {
             var filePath = addressProvider.ProvideAddress();
 
