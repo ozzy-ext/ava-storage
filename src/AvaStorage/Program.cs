@@ -1,5 +1,3 @@
-using System.Net;
-using AvaStorage;
 using AvaStorage.Application;
 using AvaStorage.ByteArrayFormatting;
 using AvaStorage.Infrastructure.ImageSharp;

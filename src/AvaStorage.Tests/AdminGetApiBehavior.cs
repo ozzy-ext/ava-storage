@@ -1,5 +1,6 @@
 using System.Net;
 using AvaStorage.Application.UseCases.GetAvatar;
+using AvaStorage.Domain;
 using Moq;
 using MyLab.ApiClient.Test;
 using MyLab.AvaStorage;
@@ -19,7 +20,7 @@ namespace AvaStorage.Tests
                         It.IsAny<GetAvatarCommand>(),
                         It.IsAny<CancellationToken>()
                     ))
-                .ReturnsAsync(new GetAvatarResult(TestTools.PictureBin));
+                .ReturnsAsync(new GetAvatarResult(new MemoryAvatarFile(TestTools.PictureBin)));
 
             var client = CreateClient();
 
@@ -37,7 +38,14 @@ namespace AvaStorage.Tests
         public async Task ShouldReturn404IfNotFound()
         {
             //Arrange
-            // _getHandlerMock returns null by default
+            _getHandlerMock
+             .Setup(
+                 h => h.Handle
+                 (
+                     It.IsAny<GetAvatarCommand>(),
+                     It.IsAny<CancellationToken>()
+                 ))
+             .ReturnsAsync(new GetAvatarResult(null));
 
             var client = CreateClient();
 

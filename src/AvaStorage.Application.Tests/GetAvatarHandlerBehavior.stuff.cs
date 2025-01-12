@@ -2,6 +2,7 @@
 using AvaStorage.Application.Options;
 using AvaStorage.Application.Services;
 using AvaStorage.Application.UseCases.GetAvatar;
+using AvaStorage.Domain;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.ValueObjects;
 using Microsoft.Extensions.Options;
@@ -17,32 +18,39 @@ public partial class GetAvatarHandlerBehavior
         new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
 
     private readonly Mock<IPictureRepository> _picRepoMock = new();
-    private readonly Mock<IPictureTools> _picToolsMock = new();
+    private readonly Mock<IImageModifier> _imgModifierMock = new();
     private readonly GetAvatarHandler _handler;
 
     private readonly AvatarPicture _absentPicture = null;
 
-    private readonly AvatarPictureBin _testAva64 = new (TestPicBin);
+    private readonly IAvatarFile _testAva64 = new MemoryAvatarFile(TestPicBin);
 
 
     private readonly Fixture _fixture = new Fixture();
     public GetAvatarHandlerBehavior()
     {
-        _handler = new GetAvatarHandler(DefaultOptions, _picRepoMock.Object, _picToolsMock.Object);
-        _picToolsMock
-            .Setup(t => t.DeserializeAsync
-            (
-                It.IsAny<AvatarPictureBin>(),
-                It.IsAny<CancellationToken>()
-            ))
-            .Returns<AvatarPictureBin, CancellationToken>((bin, _) =>
-                Task.FromResult((AvatarPicture?)new AvatarPicture(bin, new PictureSize(64, 64))));
+        _handler = new GetAvatarHandler(DefaultOptions, _picRepoMock.Object, _imgModifierMock.Object);
+        _imgModifierMock
+            .Setup(m => m.FitIntoSizeAsync
+                (
+                    It.IsAny<IAvatarFile>(),
+                    It.IsAny<int>(),
+                    It.IsAny<CancellationToken>()
+                )
+            ).Returns<IAvatarFile, int, CancellationToken>((file, _,_) =>
+            Task.FromResult(file));
     }
 
     private void AssertTheSamePicture(GetAvatarResult avatarResult)
     {
         Assert.NotNull(avatarResult);
-        Assert.NotNull(avatarResult.AvatarPicture);
-        Assert.Equal(TestPicBin, avatarResult.AvatarPicture);
+        Assert.NotNull(avatarResult.AvatarFile);
+
+        using var readStream = avatarResult.AvatarFile.OpenRead();
+        using var mem = new MemoryStream();
+
+        readStream.CopyTo(mem);
+
+        Assert.Equal(TestPicBin, mem.ToArray());
     }
 }

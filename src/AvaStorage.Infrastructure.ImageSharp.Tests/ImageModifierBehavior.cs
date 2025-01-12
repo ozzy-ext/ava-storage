@@ -1,14 +1,13 @@
-﻿using System.Formats.Asn1;
-using AvaStorage.Application.Tools;
-using AvaStorage.Application;
+﻿using AvaStorage.Application;
+using AvaStorage.Domain;
 using AvaStorage.Domain.ValueObjects;
-using AvaStorage.Infrastructure.ImageSharp.Tools;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using AvaStorage.Infrastructure.ImageSharp.Services;
 
 namespace AvaStorage.Infrastructure.ImageSharp.Tests
 {
-    public class ImageResizerBehavior
+    public class ImageModifierBehavior
     {
         [Theory]
         [MemberData(nameof(GetSizeCases))]
@@ -20,31 +19,28 @@ namespace AvaStorage.Infrastructure.ImageSharp.Tests
             await image.SaveAsBmpAsync(mem);
 
             mem.Seek(0, SeekOrigin.Begin);
-            var picBin = await TestTools.ReadBinFromStreamAsync(mem, CancellationToken.None);
-            var originPic = new AvatarPicture
-            (
-                new AvatarPictureBin(picBin),
-                new PictureSize(origin.Width, origin.Height)
-            );
+            var picBin = await TestTools.ReadBinFromStreamAsync(mem);
+            var originPic = new MemoryAvatarFile(picBin);
 
-            var imgResizer = new ImageResizer(500);
+            var imgResizer = new ImageSharpImageModifier();
 
             //Act
-            var resultPic = await imgResizer.FitIntoSizeAsync(originPic, CancellationToken.None);
+            var resultPic = await imgResizer.FitIntoSizeAsync(originPic, 500, CancellationToken.None);
 
             var resultImage = await LoadImageAsync(resultPic);
 
             //Assert
-            Assert.Equal(500, resultPic.Size.Width);
-            Assert.Equal(500, resultPic.Size.Height);
-
             Assert.Equal(500, resultImage.Width);
             Assert.Equal(500, resultImage.Height);
         }
 
-        private static async Task<ImageInfo> LoadImageAsync(AvatarPicture resultPic)
+        private static async Task<ImageInfo> LoadImageAsync(IAvatarFile resultPic)
         {
-            var resultMem = new MemoryStream(resultPic.Binary.Binary.ToArray());
+            var readStream = resultPic.OpenRead();
+            var resultMem = new MemoryStream();
+            await readStream.CopyToAsync(resultMem);
+            resultMem.Seek(0, SeekOrigin.Begin);
+
             var resultImage = await Image.IdentifyAsync(resultMem);
             return resultImage;
         }

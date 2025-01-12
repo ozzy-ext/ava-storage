@@ -15,26 +15,16 @@ class LocalFileOperator : ILocalFileOperator
         _basePath = basePath;
     }
 
-    public async Task<byte[]?> ReadFileAsync(string path, CancellationToken cancellationToken)
+    public Stream OpenRead(string path)
     {
         var filePath = Path.Combine(_basePath, path);
-        if (!File.Exists(filePath))
-        {
-            Logger?.Debug("File for reading not found")
-                .AndFactIs("file", filePath)
-                .Write();
 
-            return null;
-        }
+        return File.OpenRead(filePath);
+    }
 
-        var bin = await File.ReadAllBytesAsync(filePath, cancellationToken);
-
-        Logger?.Debug("File read")
-            .AndFactIs("file", filePath)
-            .AndFactIs("size", bin.Length)
-            .Write();
-
-        return bin;
+    public bool IsExist(string path)
+    {
+        return File.Exists(Path.Combine(_basePath, path));
     }
 
     public async Task WriteFileAsync(string path, byte[] data, CancellationToken cancellationToken)
@@ -45,9 +35,26 @@ class LocalFileOperator : ILocalFileOperator
 
         await File.WriteAllBytesAsync(filePath, data, cancellationToken);
 
-        Logger?.Debug("File writ")
-            .AndFactIs("file", filePath)
-            .AndFactIs("size", data.Length)
+        WriteLogAboutWrittenFile(filePath, data.Length);
+    }
+
+    public async Task WriteFileAsync(string path, Stream readStream, CancellationToken cancellationToken)
+    {
+        var filePath = Path.Combine(_basePath, path);
+
+        TouchDirectory(filePath);
+
+        await using var outputStream = File.OpenWrite(filePath);
+        await readStream.CopyToAsync(outputStream, cancellationToken);
+
+        WriteLogAboutWrittenFile(filePath, outputStream.Length);
+    }
+
+    void WriteLogAboutWrittenFile(string path, long length)
+    {
+        Logger?.Debug("File was written")
+            .AndFactIs("file", path)
+            .AndFactIs("size", length)
             .Write();
     }
 

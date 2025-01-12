@@ -1,4 +1,5 @@
 ﻿using System.Security.AccessControl;
+using AvaStorage.Domain;
 using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.ValueObjects;
@@ -22,26 +23,30 @@ namespace AvaStorage.Infrastructure.LocalDisk
 
         }
 
-        public Task SavePictureAsync(IPictureAddressProvider addressProvider, AvatarPictureBin pictureBin, CancellationToken cancellationToken)
+        public Task SavePictureAsync(IPictureAddressProvider addressProvider, IAvatarFile file, CancellationToken cancellationToken)
         {
             var fileAddr = addressProvider.ProvideAddress();
-            
+
+            using var stream = file.OpenRead();
+
             return _fileOperator.WriteFileAsync
             (
-                fileAddr, 
-                pictureBin.Binary.ToArray(), 
+                fileAddr,
+                stream, 
                 cancellationToken
             );
         }
 
-        public async Task<AvatarPictureBin?> LoadPictureAsync(IPictureAddressProvider addressProvider, CancellationToken cancellationToken)
+        public Task<IAvatarFile?> GetPictureAsync(IPictureAddressProvider addressProvider, CancellationToken cancellationToken)
         {
             var filePath = addressProvider.ProvideAddress();
-            var fileBin = await _fileOperator.ReadFileAsync(filePath, cancellationToken);
 
-            return fileBin != null
-                ? new AvatarPictureBin(fileBin)
-                : null;
+            if (!_fileOperator.IsExist(filePath))
+                return Task.FromResult((IAvatarFile?)null);
+
+            var filename = Path.GetFileName(filePath);
+            
+            return Task.FromResult((IAvatarFile?)new LocalAvatarFile(filename, filePath, _fileOperator));
         }
     }
 }

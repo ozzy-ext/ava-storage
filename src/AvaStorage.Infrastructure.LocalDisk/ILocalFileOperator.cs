@@ -2,7 +2,9 @@
 {
     public interface ILocalFileOperator
     {
-        Task<byte[]?> ReadFileAsync(string path, CancellationToken cancellationToken);
+        Stream OpenRead(string path);
+        bool IsExist(string path);
         Task WriteFileAsync(string path, byte[] data, CancellationToken cancellationToken);
+        Task WriteFileAsync(string path, Stream readStream, CancellationToken cancellationToken);
     }
 }

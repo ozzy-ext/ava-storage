@@ -10,7 +10,7 @@ using Xunit.Abstractions;
 
 namespace AvaStorage.IntegrationTests
 {
-    public class AvaStorageBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageV1>>
+    public class AvaStorageBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageV1>>, IDisposable
     {
         private readonly TestApiFixture<Program, IAvaStorageV1> _fxt;
 
@@ -62,6 +62,12 @@ namespace AvaStorage.IntegrationTests
 
             await using var mem = new MemoryStream(getResponseResponseContent);
             return await Image.LoadAsync(mem);
+        }
+
+        public void Dispose()
+        {
+            if (Directory.Exists("files"))
+                Directory.Delete("files", true);
         }
     }
 }

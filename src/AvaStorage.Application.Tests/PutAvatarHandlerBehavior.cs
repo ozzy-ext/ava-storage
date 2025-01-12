@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using AvaStorage.Application.Options;
 using AvaStorage.Application.UseCases.PutAvatar;
+using AvaStorage.Domain;
 using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.ValueObjects;
@@ -19,7 +20,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var repo = new Mock<IPictureRepository>();
             var options = new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
-            var handler = new PutAvatarHandler(options, repo.Object, new ImageSharpPictureTools());
+            var handler = new PutAvatarHandler(options, repo.Object, new ImageSharpImageMetadataExtractor());
 
             var picBin = await File.ReadAllBytesAsync("files\\norm.jpg");
 
@@ -40,7 +41,7 @@ namespace AvaStorage.Application.Tests
                 r => r.SavePictureAsync
                 (
                     It.Is<IPictureAddressProvider>(p => p.ProvideAddress() == expectedPicAddr),
-                    It.IsAny<AvatarPictureBin>(),
+                    It.IsAny<IAvatarFile>(),
                     CancellationToken.None
                 )
             );
@@ -54,7 +55,7 @@ namespace AvaStorage.Application.Tests
             //Arrange
             var repo = new Mock<IPictureRepository>();
             var options = new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
-            var handler = new PutAvatarHandler(options, repo.Object, new ImageSharpPictureTools());
+            var handler = new PutAvatarHandler(options, repo.Object, new ImageSharpImageMetadataExtractor());
 
             var putCmd = new PutAvatarCommand
             (
