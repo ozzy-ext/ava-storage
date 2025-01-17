@@ -7,7 +7,7 @@ using MyLab.AvaStorage;
 
 namespace AvaStorage.Tests
 {
-    public partial class AdminGetApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageV1>>
+    public partial class GetApiBehavior : IClassFixture<TestApiFixture<Program, IAvaStorageV1>>
     {
         [Fact]
         public async Task ShouldGetPicture()

@@ -9,11 +9,11 @@ using Xunit.Abstractions;
 
 namespace AvaStorage.Tests;
 
-public partial class AdminGetApiBehavior
+public partial class GetApiBehavior
 {
     private readonly TestApiFixture<Program, IAvaStorageV1> _fxt;
 
-    public AdminGetApiBehavior(TestApiFixture<Program, IAvaStorageV1> fxt, ITestOutputHelper output)
+    public GetApiBehavior(TestApiFixture<Program, IAvaStorageV1> fxt, ITestOutputHelper output)
     {
         fxt.Output = output;
         _fxt = fxt;
