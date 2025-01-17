@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using MyLab.ApiClient.Test;
 using MyLab.AvaStorage;
+using MyLab.WebErrors;
 using Xunit.Abstractions;
 
 namespace AvaStorage.Tests
@@ -18,13 +19,27 @@ namespace AvaStorage.Tests
         {
             fxt.Output = output;
             _fxt = fxt;
+            _fxt.ServiceOverrider = c => c.Configure<ExceptionProcessingOptions>(o => o.HideError = false);
         }
 
         [Fact]
         public async Task ShouldPutPicture()
         {
             //Arrange
+            byte[]? savedPicBin = null;
+
             var putHandlerMock = new Mock<IRequestHandler<PutAvatarCommand>>();
+            putHandlerMock.Setup
+            (h =>
+                h.Handle
+                (
+                    It.IsAny<PutAvatarCommand>(),
+                    It.IsAny<CancellationToken>()
+                )
+            ).Callback<PutAvatarCommand, CancellationToken>((c, _) =>
+            {
+                savedPicBin = c.Picture;
+            });
 
             var outHandlerDescriptor = ServiceDescriptor.Transient(typeof(IRequestHandler<PutAvatarCommand>), s => putHandlerMock.Object);
 
@@ -41,19 +56,7 @@ namespace AvaStorage.Tests
             //Assert
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            putHandlerMock.Verify(h => h.Handle
-                (
-                    It.Is<PutAvatarCommand>(c => 
-                            c.Id == "foo" &&
-                            c.Picture[0] == 1 &&
-                            c.Picture[1] == 2 &&
-                            c.Picture[2] == 3
-                        ),
-                    It.IsAny<CancellationToken>()
-                ),
-                Times.Once);
-            putHandlerMock.VerifyNoOtherCalls();
+            Assert.Equal(TestTools.PictureBin, savedPicBin);
         }
 
         [Theory]
@@ -78,7 +81,7 @@ namespace AvaStorage.Tests
         public static object[][] GetInvalidParameters()
         {
             var validPicBin = new byte[] { 1, 2, 3 };
-            var tooLargeBin = new byte[600];
+            var tooLargeBin = new byte[600*1024];
 
             return new object[][]
             {

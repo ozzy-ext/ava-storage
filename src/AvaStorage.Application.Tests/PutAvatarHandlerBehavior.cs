@@ -3,6 +3,7 @@ using AvaStorage.Application.UseCases.PutAvatar;
 using AvaStorage.Domain;
 using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
+using AvaStorage.Infrastructure.ImageSharp.Services;
 using Moq;
 using Xunit.Abstractions;
 
@@ -22,7 +23,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             var repo = new Mock<IPictureRepository>();
-            var handler = new PutAvatarHandler(repo.Object);
+            var handler = new PutAvatarHandler(repo.Object, new ImageSharpImageMetadataExtractor());
 
             var picBin = await File.ReadAllBytesAsync("files\\norm.jpg");
 
@@ -56,7 +57,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             var repo = new Mock<IPictureRepository>();
-            var handler = new PutAvatarHandler(repo.Object);
+            var handler = new PutAvatarHandler(repo.Object, new ImageSharpImageMetadataExtractor());
 
             var putCmd = new PutAvatarCommand
             (

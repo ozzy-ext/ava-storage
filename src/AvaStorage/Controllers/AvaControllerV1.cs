@@ -22,16 +22,20 @@ namespace AvaStorage.Controllers
         public async Task<IActionResult> PutAsync
             (
                 [FromRoute(Name = "id")][Required(AllowEmptyStrings = false)] string id,
-                [FromBody][Required] byte[] picture,
+                [FromBody][Required] byte[] pictureBody,
                 CancellationToken cancellationToken
             )
         {
             if (!Request.Headers.ContentLength.HasValue)
                 return BadRequest("Content-Length header is required");
-            if (Request.Headers.ContentLength / 1024 < opts.Value.MaxOriginalFileLength)
+            if (Request.Headers.ContentLength == 0)
+                return BadRequest("Content is required");
+            if (Request.Headers.ContentLength / 1024 > opts.Value.MaxOriginalFileLength)
                 return StatusCode((int)HttpStatusCode.RequestEntityTooLarge);
 
-            await mediator.Send(new PutAvatarCommand(id, picture), cancellationToken);
+
+
+            await mediator.Send(new PutAvatarCommand(id, pictureBody), cancellationToken);
 
             return Ok();
         }
