@@ -2,7 +2,7 @@
 {
     public class AvaStorageOptions
     {
-        public int MaxSize { get; set; } = 512;
+        public int MaxRequestedSize { get; set; } = 512;
 
         public int MaxOriginalFileLength { get; set; } = 512; //Kb
     }
