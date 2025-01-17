@@ -34,7 +34,7 @@ namespace AvaStorage.Application.UseCases.GetAvatar
             if (request.SubjectType != null && !SubjectType.TryParse(request.SubjectType, out subjectType))
                 throw new ValidationException("Subject type has wrong format");
 
-            if (request.Size.HasValue && !new PictureSizeValidator(options.Value.MaxSize).IsValid(request.Size.Value))
+            if (request.Size.HasValue && !new ImageValidator(options.Value.MaxSize).IsValidSize(request.Size.Value))
                 throw new ValidationException("Wrong size value");
 
             var foundPicture = await _searchLogic.SearchPictureAsync(avatarId!, subjectType, request.Size, cancellationToken);

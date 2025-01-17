@@ -1,26 +1,28 @@
 using System.ComponentModel.DataAnnotations;
-using AvaStorage.Application.Options;
 using AvaStorage.Application.UseCases.PutAvatar;
 using AvaStorage.Domain;
 using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
-using AvaStorage.Domain.ValueObjects;
-using AvaStorage.Infrastructure.ImageSharp;
-using AvaStorage.Infrastructure.ImageSharp.Services;
-using Microsoft.Extensions.Options;
 using Moq;
+using Xunit.Abstractions;
 
 namespace AvaStorage.Application.Tests
 {
     public class PutAvatarHandlerBehavior
     {
+        private readonly ITestOutputHelper _output;
+
+        public PutAvatarHandlerBehavior(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public async Task ShouldSaveOriginalPicture()
         {
             //Arrange
             var repo = new Mock<IPictureRepository>();
-            var options = new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
-            var handler = new PutAvatarHandler(options, repo.Object, new ImageSharpImageMetadataExtractor());
+            var handler = new PutAvatarHandler(repo.Object);
 
             var picBin = await File.ReadAllBytesAsync("files\\norm.jpg");
 
@@ -54,8 +56,7 @@ namespace AvaStorage.Application.Tests
         {
             //Arrange
             var repo = new Mock<IPictureRepository>();
-            var options = new OptionsWrapper<AvaStorageOptions>(new AvaStorageOptions());
-            var handler = new PutAvatarHandler(options, repo.Object, new ImageSharpImageMetadataExtractor());
+            var handler = new PutAvatarHandler(repo.Object);
 
             var putCmd = new PutAvatarCommand
             (
@@ -65,10 +66,12 @@ namespace AvaStorage.Application.Tests
 
             //Act & Assert
 
-            await Assert.ThrowsAsync<ValidationException>
+            var  e = await Assert.ThrowsAsync<ValidationException>
             (
                 () => handler.Handle(putCmd, CancellationToken.None)
             );
+
+            _output.WriteLine(e.ToString());
         }
 
         public static object[][] GetInvalidParameters()

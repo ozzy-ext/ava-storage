@@ -8,7 +8,7 @@ namespace AvaStorage.Domain.Tests
         [Theory]
         [InlineData(1200, 1200, false)]
         [InlineData(100, 100, true)]
-        public async Task ShouldValidateSize(int imgWidth, int imgHeight, bool expectedValidation)
+        public void ShouldValidateWithAndHeight(int imgWidth, int imgHeight, bool expectedValidation)
         {
             //Arrange
             var validator = new ImageValidator(512);
@@ -20,6 +20,24 @@ namespace AvaStorage.Domain.Tests
 
             //Assert
             Assert.Equal(expectedValidation, validationResult);
+        }
+
+        [Theory]
+        [InlineData(-1, false)]
+        [InlineData(0, false)]
+        [InlineData(8, false)]
+        [InlineData(1000, false)]
+        [InlineData(100, true)]
+        public void ShouldValidateSize(int size, bool expectedResult)
+        {
+            //Arrange
+            var validator = new ImageValidator(512);
+
+            //Act
+            var result = validator.IsValidSize(size);
+
+            //Assert
+            Assert.Equal(expectedResult, result);
         }
     }
 }

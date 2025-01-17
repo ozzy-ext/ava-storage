@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using AvaStorage.Application.Options;
 using AvaStorage.Application.UseCases.GetAvatar;
 using AvaStorage.Application.UseCases.PutAvatar;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using MyLab.WebErrors;
 
@@ -11,7 +13,7 @@ namespace AvaStorage.Controllers
 {
     [ApiController]
     [Route("v1/ava")]
-    public class AvaControllerV1(IMediator mediator) : ControllerBase
+    public class AvaControllerV1(IMediator mediator, IOptions<AvaStorageOptions> opts) : ControllerBase
     {
 
         [HttpPut("{id}")]
@@ -24,9 +26,20 @@ namespace AvaStorage.Controllers
                 CancellationToken cancellationToken
             )
         {
+            if (!Request.Headers.ContentLength.HasValue)
+                return BadRequest("Content-Length header is required");
+            if (Request.Headers.ContentLength / 1024 < opts.Value.MaxOriginalFileLength)
+                return StatusCode((int)HttpStatusCode.RequestEntityTooLarge);
+
             await mediator.Send(new PutAvatarCommand(id, picture), cancellationToken);
 
             return Ok();
+        }
+
+        [HttpPut]
+        public IActionResult PutAsync()
+        {
+            return BadRequest("Subject identifier is required");
         }
 
         [HttpGet("{id}")]
