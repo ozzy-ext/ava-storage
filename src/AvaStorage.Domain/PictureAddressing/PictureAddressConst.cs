@@ -6,7 +6,7 @@
         public const string SubjectPath = "subject-types";
         public const string DefaultPath = "default";
 
-        public const string OriginFilename = "origin";
-        public const string DefaultFilename = "default";
+        public const string OriginFilename = "origin.png";
+        public const string DefaultFilename = "default.png";
     }
 }

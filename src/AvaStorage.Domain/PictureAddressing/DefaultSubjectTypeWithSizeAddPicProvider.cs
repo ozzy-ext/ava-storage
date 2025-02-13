@@ -14,6 +14,6 @@ public class DefaultSubjectTypeWithSizeAddPicProvider : IPictureAddressProvider
     }
     public string ProvideAddress()
     {
-        return Path.Combine(PictureAddressConst.SubjectPath, _subjectType.Value, _size.ToString());
+        return Path.Combine(PictureAddressConst.SubjectPath, _subjectType.Value, _size + ".png");
     }
 }

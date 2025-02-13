@@ -11,6 +11,6 @@ public class DefaultPicWithSizeAddrProvider : IPictureAddressProvider
 
     public string ProvideAddress()
     {
-        return Path.Combine(PictureAddressConst.DefaultPath, _size.ToString());
+        return Path.Combine(PictureAddressConst.DefaultPath, _size + ".png");
     }
 }

@@ -14,6 +14,6 @@ public class PersonalWithSizePicAddrProvider : IPictureAddressProvider
     }
     public string ProvideAddress()
     {
-        return Path.Combine(PictureAddressConst.PersonalPath, _avaId.Value, _size.ToString());
+        return Path.Combine(PictureAddressConst.PersonalPath, _avaId.Value, _size + ".png");
     }
 }
