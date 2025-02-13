@@ -7,7 +7,9 @@ public class ByteArrayOutputFormatter : OutputFormatter
 {
     public ByteArrayOutputFormatter()
     {
-        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ByteArrayFormatters.MediaType));
+        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ByteArrayFormatters.JpegMediaType));
+        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ByteArrayFormatters.PngMediaType));
+        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ByteArrayFormatters.GifMediaType));
     }
 
     protected override bool CanWriteType(Type type)

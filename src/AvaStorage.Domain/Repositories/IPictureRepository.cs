@@ -1,5 +1,4 @@
 ﻿using AvaStorage.Domain.PictureAddressing;
-using AvaStorage.Domain.ValueObjects;
 
 namespace AvaStorage.Domain.Repositories
 {

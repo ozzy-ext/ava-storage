@@ -41,7 +41,7 @@ namespace AvaStorage.IntegrationTests
 
             var picBin = await File.ReadAllBytesAsync("norm.png");
 
-            var putResponse = await client.PutAsync("foo", picBin);
+            var putResponse = await client.PutPngAsync("foo", picBin);
 
             //Act
             var getResponse = await client.GetAsync("foo", 64, "admin");

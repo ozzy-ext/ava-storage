@@ -17,6 +17,9 @@ namespace AvaStorage.Application.UseCases.PutAvatar
     {
         public async Task Handle(PutAvatarCommand request, CancellationToken cancellationToken)
         {
+            if (request.Format == ImageFormat.Undefined)
+                throw new ValidationException("Undefined image format");
+
             if (!AvatarId.TryParse(request.Id, out var avatarId))
                 throw new ValidationException("Avatar ID has wrong format");
 

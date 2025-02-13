@@ -51,12 +51,35 @@ namespace AvaStorage.Tests
             var client = proxyAsset.ApiClient;
 
             //Act
-            var response = await client.PutAsync("foo", TestTools.PictureBin);
+            var response = await client.PutPngAsync("foo", TestTools.PictureBin);
 
             //Assert
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(TestTools.PictureBin, savedPicBin);
+        }
+
+        [Fact]
+        public async Task ShouldRejectWrongMimeType()
+        {
+            //Arrange
+            var putHandlerMock = new Mock<IRequestHandler<PutAvatarCommand>>();
+
+            var outHandlerDescriptor = ServiceDescriptor.Transient(typeof(IRequestHandler<PutAvatarCommand>), s => putHandlerMock.Object);
+
+            var proxyAsset = _fxt.StartWithProxy
+            (
+                s => s
+                    .Replace(outHandlerDescriptor)
+                    .AddSingleton(TestTools.DefaultRepoMock.Object));
+            var client = proxyAsset.ApiClient;
+
+            //Act
+            var response = await client.PutWrongFormatAsync("foo", TestTools.PictureBin);
+
+            //Assert
+            Assert.NotNull(response);
+            Assert.Equal(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
         }
 
         [Theory]
@@ -72,7 +95,7 @@ namespace AvaStorage.Tests
             var client = proxyAsset.ApiClient;
 
             //Act
-            var response = await client.PutAsync(id, picBin);
+            var response = await client.PutPngAsync(id, picBin);
 
             //Assert
             Assert.Equal(expectedCode, response.StatusCode);

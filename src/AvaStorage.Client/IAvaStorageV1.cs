@@ -8,10 +8,31 @@ namespace MyLab.AvaStorage
     public interface IAvaStorageV1
     {
         [Put]
-        Task<CallDetails> PutAsync
+        Task<CallDetails> PutWrongFormatAsync
         (
             [Path("id")] string id,
-            [BinContent] byte[] picture
+            [BinContent("wrong/format")] byte[] picture
+        );
+
+        [Put]
+        Task<CallDetails> PutPngAsync
+        (
+            [Path("id")] string id,
+            [BinContent("image/png")] byte[] picture
+        );
+
+        [Put]
+        Task<CallDetails> PutJpegAsync
+        (
+            [Path("id")] string id,
+            [BinContent("image/jpeg")] byte[] picture
+        );
+
+        [Put]
+        Task<CallDetails> PutGifAsync
+        (
+            [Path("id")] string id,
+            [BinContent("image/gif")] byte[] picture
         );
 
         [Get]

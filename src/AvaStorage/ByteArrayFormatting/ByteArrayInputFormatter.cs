@@ -7,7 +7,9 @@ public class ByteArrayInputFormatter : InputFormatter
 {
     public ByteArrayInputFormatter()
     {
-        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ByteArrayFormatters.MediaType));
+        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ByteArrayFormatters.JpegMediaType));
+        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ByteArrayFormatters.PngMediaType));
+        SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(ByteArrayFormatters.GifMediaType));
     }
 
     protected override bool CanReadType(Type type)

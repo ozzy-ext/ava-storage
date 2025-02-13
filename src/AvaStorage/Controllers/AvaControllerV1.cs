@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using AvaStorage.Application;
 using AvaStorage.Application.Options;
 using AvaStorage.Application.UseCases.GetAvatar;
 using AvaStorage.Application.UseCases.PutAvatar;
@@ -17,7 +18,6 @@ namespace AvaStorage.Controllers
     {
 
         [HttpPut("{id}")]
-        [Consumes("application/octet-stream")]
         [ErrorToResponse(typeof(ValidationException), HttpStatusCode.BadRequest)]
         public async Task<IActionResult> PutAsync
             (
@@ -33,9 +33,20 @@ namespace AvaStorage.Controllers
             if (Request.Headers.ContentLength / 1024 > opts.Value.MaxOriginalFileLength)
                 return StatusCode((int)HttpStatusCode.RequestEntityTooLarge);
 
+            if (Request.ContentType == null)
+                return new UnsupportedMediaTypeResult();
 
+            ImageFormat imageFormat;
 
-            await mediator.Send(new PutAvatarCommand(id, pictureBody), cancellationToken);
+            switch (Request.ContentType)
+            {
+                case "image/png": imageFormat = ImageFormat.Png; break;
+                case "image/jpeg": imageFormat = ImageFormat.Jpeg; break;
+                case "image/gif": imageFormat = ImageFormat.Gif; break;
+                default: return new UnsupportedMediaTypeResult();
+            }
+
+            await mediator.Send(new PutAvatarCommand(id, pictureBody, imageFormat), cancellationToken);
 
             return Ok();
         }
