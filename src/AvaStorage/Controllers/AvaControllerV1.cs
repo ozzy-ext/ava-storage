@@ -36,17 +36,7 @@ namespace AvaStorage.Controllers
             if (Request.ContentType == null)
                 return new UnsupportedMediaTypeResult();
 
-            ImageFormat imageFormat;
-
-            switch (Request.ContentType)
-            {
-                case "image/png": imageFormat = ImageFormat.Png; break;
-                case "image/jpeg": imageFormat = ImageFormat.Jpeg; break;
-                case "image/gif": imageFormat = ImageFormat.Gif; break;
-                default: return new UnsupportedMediaTypeResult();
-            }
-
-            await mediator.Send(new PutAvatarCommand(id, pictureBody, imageFormat), cancellationToken);
+            await mediator.Send(new PutAvatarCommand(id, pictureBody), cancellationToken);
 
             return Ok();
         }

@@ -3,7 +3,6 @@ using AvaStorage.Application.Services;
 using AvaStorage.Application.Tools;
 using AvaStorage.Domain;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
 
@@ -37,7 +36,19 @@ namespace AvaStorage.Infrastructure.ImageSharp.Services
                 await img.SaveAsync(writeMem, new PngEncoder(), cancellationToken);
             }
 
-            return new MemoryAvatarFile(writeMem.ToArray(), origin.Name);
+            return new MemoryAvatarFile(writeMem.ToArray());
+        }
+
+        public async Task<IAvatarFile> ConvertToInnerFormatAsync(IAvatarFile origin, CancellationToken cancellationToken)
+        {
+            await using var stream = origin.OpenRead();
+            using var img = await Image.LoadAsync(stream, cancellationToken);
+            
+            await using var writeMem = new MemoryStream();
+
+            await img.SaveAsync(writeMem, new PngEncoder(), cancellationToken);
+
+            return new MemoryAvatarFile(writeMem.ToArray());
         }
     }
 }
