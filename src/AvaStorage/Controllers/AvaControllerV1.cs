@@ -61,7 +61,14 @@ namespace AvaStorage.Controllers
 
             if (result.AvatarFile == null) return NotFound();
 
-            return base.File(result.AvatarFile.OpenRead(), "image/png", result.AvatarFile.LastModified, EntityTagHeaderValue.Any);
+            return base.File
+            (
+                result.AvatarFile.OpenRead(), 
+                "image/png",
+                id + ".png",
+                result.AvatarFile.LastModified, 
+                EntityTagHeaderValue.Any
+            );
         }
     }
 }

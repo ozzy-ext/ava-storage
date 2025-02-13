@@ -29,6 +29,7 @@ namespace AvaStorage.Tests
 
             //Assert
             Assert.NotNull(response);
+            Assert.Equal("foo.png", response.ResponseMessage.Content.Headers.ContentDisposition?.FileName);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(TestTools.PictureBin, response.ResponseContent);
             VerifyHandlerCall("foo", 64, "admin");
