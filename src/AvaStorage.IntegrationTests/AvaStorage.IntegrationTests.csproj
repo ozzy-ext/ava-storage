@@ -12,7 +12,7 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="MyLab.ApiClient" Version="3.21.30" />
+    <PackageReference Include="MyLab.ApiClient" Version="3.21.31" />
     <PackageReference Include="MyLab.ApiClient.Test" Version="1.5.7" />
     <PackageReference Include="MyLab.WebErrors" Version="1.1.6" />
     <PackageReference Include="xunit" Version="2.5.3" />

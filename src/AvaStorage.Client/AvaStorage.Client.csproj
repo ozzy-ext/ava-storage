@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MyLab.ApiClient" Version="3.21.30" />
+    <PackageReference Include="MyLab.ApiClient" Version="3.21.31" />
   </ItemGroup>
 
 </Project>
