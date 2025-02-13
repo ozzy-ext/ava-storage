@@ -30,7 +30,8 @@ namespace AvaStorage.Application.Tests
             var putCmd = new PutAvatarCommand
             (
                 "foo",
-                picBin
+                picBin,
+                ImageFormat.Jpeg
             );
 
             var expectedPicAddr = new OriginalPersonalPicAddrProvider("foo").ProvideAddress();
@@ -62,7 +63,8 @@ namespace AvaStorage.Application.Tests
             var putCmd = new PutAvatarCommand
             (
                 id,
-                picBin
+                picBin,
+                ImageFormat.Jpeg
             );
 
             //Act & Assert
