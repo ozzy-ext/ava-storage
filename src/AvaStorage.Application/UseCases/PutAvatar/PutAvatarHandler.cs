@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading;
+using AvaStorage.Application.Options;
 using AvaStorage.Application.Services;
 using AvaStorage.Domain;
 using AvaStorage.Domain.PictureAddressing;
@@ -7,6 +8,7 @@ using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.Tools;
 using AvaStorage.Domain.ValueObjects;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace AvaStorage.Application.UseCases.PutAvatar
 {
@@ -14,21 +16,29 @@ namespace AvaStorage.Application.UseCases.PutAvatar
     (
         IPictureRepository pictureRepo,
         IImageMetadataExtractor metadataExtractor,
-        IImageModifier imageModifier
-    ) : IRequestHandler<PutAvatarCommand>
+        IImageModifier imageModifier,
+        IOptions<AvaStorageOptions>? opt = null
+        ) : IRequestHandler<PutAvatarCommand>
     {
         public async Task Handle(PutAvatarCommand request, CancellationToken cancellationToken)
         {
             if (!AvatarId.TryParse(request.Id, out var avatarId))
                 throw new ValidationException("Avatar ID has wrong format");
 
-            var imgFormat = await CheckAndExtractFormat(request.Picture, cancellationToken);
+            var imgMeta = await CheckAndExtractFormat(request.Picture, cancellationToken);
 
             IAvatarFile avatarFile = new MemoryAvatarFile(request.Picture);
 
-            if (imgFormat != "PNG")
+            if (IsNotInnerFormat(imgMeta))
             {
                 avatarFile = await imageModifier.ConvertToInnerFormatAsync(avatarFile, cancellationToken);
+            }
+
+            var predefinedSizes = opt?.Value.PredefinedSizes?.Where(s => s > 0).ToArray();
+
+            if (predefinedSizes != null)
+            {
+                await CreatePredefinedSizeCopiesAsync(request.Id, predefinedSizes, avatarFile, cancellationToken);
             }
 
             await pictureRepo.SavePictureAsync
@@ -39,7 +49,20 @@ namespace AvaStorage.Application.UseCases.PutAvatar
                 );
         }
 
-        private async Task<string> CheckAndExtractFormat(byte[] requestPicture, CancellationToken cancellationToken)
+        private async Task CreatePredefinedSizeCopiesAsync(string avaId, int[] predefinedSizes, IAvatarFile avaFile, CancellationToken cancellationToken)
+        {
+            foreach (var predefinedSize in predefinedSizes)
+            {
+                var sizeAvaFile = await imageModifier.FitIntoSizeAsync(avaFile, predefinedSize, cancellationToken);
+                var addrProvider = new PersonalWithSizePicAddrProvider(avaId, predefinedSize);
+
+                await pictureRepo.SavePictureAsync(addrProvider, sizeAvaFile,cancellationToken);
+            }
+        }
+
+        bool IsNotInnerFormat(ImageMetadata imgMeta) => imgMeta.Format != "PNG";
+
+        private async Task<ImageMetadata> CheckAndExtractFormat(byte[] requestPicture, CancellationToken cancellationToken)
         {
             using var mem = new MemoryStream(requestPicture);
             ImageMetadata imgMeta;
@@ -58,7 +81,7 @@ namespace AvaStorage.Application.UseCases.PutAvatar
                 throw new ValidationException("Can't detect image format");
             }
 
-            return imgMeta.Format;
+            return imgMeta;
         }
     }
 }

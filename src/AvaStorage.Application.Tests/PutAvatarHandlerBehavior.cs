@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using AutoFixture;
+using AvaStorage.Application.Options;
 using AvaStorage.Application.Services;
 using AvaStorage.Application.UseCases.PutAvatar;
 using AvaStorage.Domain;
 using AvaStorage.Domain.PictureAddressing;
 using AvaStorage.Domain.Repositories;
 using AvaStorage.Domain.Tools;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit.Abstractions;
 
@@ -160,6 +162,71 @@ namespace AvaStorage.Application.Tests
             );
 
             _output.WriteLine(e.ToString());
+        }
+
+        [Fact]
+        public async Task ShouldSavePredefinedSizeCopies()
+        {
+            //Arrange
+            var avaOptions = new AvaStorageOptions
+            {
+                PredefinedSizes = [10, 20]
+            };
+
+            var handler = new PutAvatarHandler
+                (
+                    _repo.Object, 
+                    _pngMetadataExtractor.Object, 
+                    _imageModifier.Object,
+                    new OptionsWrapper<AvaStorageOptions>(avaOptions)
+                );
+            var putCmd = new PutAvatarCommand("foo", _mockImgBin);
+
+            var expectedOriginalPicAddr = new OriginalPersonalPicAddrProvider("foo").ProvideAddress();
+            var expected10SizePicAddr = new PersonalWithSizePicAddrProvider("foo", 10).ProvideAddress();
+            var expected20SizePicAddr = new PersonalWithSizePicAddrProvider("foo", 20).ProvideAddress();
+
+            //Act
+            await handler.Handle(putCmd, CancellationToken.None);
+
+            //Assert
+            _repo.Verify
+            (
+                r => r.SavePictureAsync
+                (
+                    It.Is<IPictureAddressProvider>
+                    (p => 
+                        p.ProvideAddress() == expectedOriginalPicAddr
+                    ),
+                    It.IsAny<IAvatarFile>(),
+                    CancellationToken.None
+                )
+            );
+            _repo.Verify
+            (
+                r => r.SavePictureAsync
+                (
+                    It.Is<IPictureAddressProvider>
+                    (p => 
+                        p.ProvideAddress() == expected10SizePicAddr
+                    ),
+                    It.IsAny<IAvatarFile>(),
+                    CancellationToken.None
+                )
+            );
+            _repo.Verify
+            (
+                r => r.SavePictureAsync
+                (
+                    It.Is<IPictureAddressProvider>
+                    (p => 
+                        p.ProvideAddress() == expected20SizePicAddr
+                    ),
+                    It.IsAny<IAvatarFile>(),
+                    CancellationToken.None
+                )
+            );
+            _repo.VerifyNoOtherCalls();
         }
     }
 }
